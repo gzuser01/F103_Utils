@@ -10,7 +10,7 @@
  */
 void TIM3_Configuration(void);
 
-void Register_TIM3_IRQHandler(void (* ptr)());  
+void Register_TIM3_Callback(void (* ptr)());  
 
 void TIM3_IRQHandler(void);
 

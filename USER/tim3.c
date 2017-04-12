@@ -13,7 +13,7 @@ void TIM3_Configuration(void)
   TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;  
 	NVIC_InitTypeDef NVIC_InitStructure;    
 	
-	
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,ENABLE);  
     
   TIM_ClearITPendingBit(TIM3, TIM_IT_Update);  
     
@@ -41,12 +41,19 @@ void TIM3_Configuration(void)
 
 /**
  * 注册中断回调函数
+ * 每 0.01秒 即 10 毫秒执行一次
  */
-void Register_TIM3_IRQHandler(void (* ptr)())
+void Register_TIM3_Callback(void (* ptr)())
 {
 	int i;
 	for(i = 0;i<10;i++)
 	{
+		//已经注册
+		if(_m_tim3_irqhandler_ptr[i] == ptr)
+		{
+			return;
+		}
+		//序号移动到未设置或未占用
 		if(_m_tim3_irqhandler_ptr[i] == 0)
 		{
 			_m_tim3_irqhandler_ptr[i] = ptr;
@@ -66,10 +73,13 @@ void TIM3_IRQHandler(void)
 	
 	for(i = 0;i<10;i++)
 	{
-		if(_m_tim3_irqhandler_ptr[i] != 0)
+		if(_m_tim3_irqhandler_ptr[i] == 0)
 		{
-			(* _m_tim3_irqhandler_ptr[i])();
+			break;
 		}
+
+		(* _m_tim3_irqhandler_ptr[i])();
+
 	}
 	
 }

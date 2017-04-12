@@ -6,8 +6,11 @@
 
 void USART1_Config(void);
 
-void UART1SendByte(unsigned char SendData);
+void UART1_Send_Byte(unsigned char SendData);
 
-unsigned char UART1GetByte(unsigned char* GetData);
+unsigned char UART1_Get_Byte(unsigned char* GetData);
+
+void Register_USART1_Callback(void (* ptr)(unsigned char));
+
 	
 #endif /* __USART1_H */

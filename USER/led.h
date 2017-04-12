@@ -6,10 +6,10 @@
 
 
 
-void LED_Config(uint16_t GPIO_Pin);
+void LED_Config(GPIO_TypeDef *GPIOx,uint16_t GPIO_Pin);
 
-void LED_On(uint16_t GPIO_Pin);
-void LED_Off(uint16_t GPIO_Pin);
+void LED_On(GPIO_TypeDef *GPIOx,uint16_t GPIO_Pin);
+void LED_Off(GPIO_TypeDef *GPIOx,uint16_t GPIO_Pin);
 
 
 #endif /* __LED_H */
