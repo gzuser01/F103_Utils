@@ -1,0 +1,77 @@
+#include "tim3.h"
+
+
+/**
+ * TIM3中断回调函数的指针
+ */
+void (*_m_tim3_irqhandler_ptr[])(void) = {0,0,0,0,0,0,0,0,0,0};
+
+
+
+void TIM3_Configuration(void)    
+{  
+  TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;  
+	NVIC_InitTypeDef NVIC_InitStructure;    
+	
+	
+    
+  TIM_ClearITPendingBit(TIM3, TIM_IT_Update);  
+    
+  TIM_TimeBaseStructure.TIM_Period = 99; //999- 0.01秒中断
+  TIM_TimeBaseStructure.TIM_Prescaler = 7199;
+  TIM_TimeBaseStructure.TIM_ClockDivision = 0x0;  
+  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  
+  TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);  
+    
+  TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE );  
+  TIM_Cmd(TIM3,ENABLE);  
+	
+	
+	
+  //配置中断优先级  
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);    
+      
+  NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;    
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;    
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;    
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;    
+  NVIC_Init(&NVIC_InitStructure);   
+}  
+
+
+/**
+ * 注册中断回调函数
+ */
+void Register_TIM3_IRQHandler(void (* ptr)())
+{
+	int i;
+	for(i = 0;i<10;i++)
+	{
+		if(_m_tim3_irqhandler_ptr[i] == 0)
+		{
+			_m_tim3_irqhandler_ptr[i] = ptr;
+			return;
+		}
+	}
+}
+  
+
+/**
+ * 定时器3中断服务程序
+ */
+void TIM3_IRQHandler(void)  
+{  
+	int i;
+  TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+	
+	for(i = 0;i<10;i++)
+	{
+		if(_m_tim3_irqhandler_ptr[i] != 0)
+		{
+			(* _m_tim3_irqhandler_ptr[i])();
+		}
+	}
+	
+}
+
+
