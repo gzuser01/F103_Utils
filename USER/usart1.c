@@ -29,10 +29,10 @@ void USART1_Config(void)
 	NVIC_InitTypeDef NVIC_InitStructure;
 	
 	/* 使能 USART1 中断 */
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);//选择分组方式0
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);//选择分组方式0，最高
   
   NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;//最高
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
 	
