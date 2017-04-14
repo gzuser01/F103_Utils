@@ -424,6 +424,16 @@
               <FileType>5</FileType>
               <FilePath>.\linked_list.h</FilePath>
             </File>
+            <File>
+              <FileName>linked_list_data.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\linked_list_data.h</FilePath>
+            </File>
+            <File>
+              <FileName>usart1_data.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\usart1_data.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

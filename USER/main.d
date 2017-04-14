@@ -15,5 +15,8 @@
 .\main.o: tim3.h
 .\main.o: ..\FWlib\inc\stm32f10x_tim.h
 .\main.o: ..\FWlib\inc\misc.h
+.\main.o: usart1_data.h
 .\main.o: linked_list.h
+.\main.o: linked_list_data.h
 .\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

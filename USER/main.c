@@ -10,96 +10,38 @@
 #include "stm32f10x.h"
 #include "usart1.h"
 #include "flash_led.h"
-#include "linked_list.h"
+#include "usart1_data.h"
+
 #include <stdlib.h>
 
 
 
-uint16_t UART1_LED_GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14; //正极接3.3V，负极接 C14 口
-uint16_t UART1_LED_GPIO_Pin2 = GPIO_Pin_12;
+//uint16_t UART1_LED_GPIO_Pin = GPIO_Pin_13 | GPIO_Pin_14; //正极接3.3V，负极接 C14 口
+uint16_t UART1_LED_GPIO_Pin = GPIO_Pin_12;
 
-unsigned char uart1_received_count = 0;
+unsigned long uart1_received_count = 0;
 
 
-struct Node *UART1_Received_Linked = NULL;
-struct Node *UART1_Received_Head = NULL;
-struct Node *UART1_Received_Current = NULL;
-
-int Received_Buffer_Idx = 0;
 
 /*接收一个数据，马上返回接收到的这个数据*/
-void UART1_Send_Received_Data(unsigned char c)
+void UART1_Flash_LED_On_Received(unsigned char c)
 {
-  //long i;
-	//long j;
-	Led_Auto_Off(GPIOC,UART1_LED_GPIO_Pin,8);
-	Led_Auto_Off(GPIOB,UART1_LED_GPIO_Pin2,200);
+
+	Led_Auto_Off(GPIOB,UART1_LED_GPIO_Pin,8);
 	//UART1_Send_Byte(c);
 
  
 }
 
-void init_linked()
-{
-	int i;
-	UART1_Received_Linked = (struct Node *)malloc(4 * sizeof(struct Node));
-	for(i=0;i<8;i++)
-	{
-		UART1_Received_Linked[i].c = (unsigned char *)malloc(8* sizeof(unsigned char));
-	}
-	
-}
 
-void reset_c_buffer(unsigned char *c,int len)
-{
-	int i=0;
-	for(i = 0;i<len;i++)
-	{
-		c[i] = 0x00;
-	}
-}
 
 
 void UART1_Received_To_Buffer(unsigned char c)
 {
 	
-	UART1_Send_Byte(c);
+	//UART1_Send_Byte(c);debug
 
-	if(UART1_Received_Current == NULL)
-	{
-		UART1_Received_Current = linked_pick_up_node(&UART1_Received_Head,UART1_Received_Linked,4);
-		reset_c_buffer(UART1_Received_Current->c,8);
-		Received_Buffer_Idx = 0;
-	}
-
-	//添加到Buffer
-	if(Received_Buffer_Idx < 8)
-	{
-		UART1_Received_Current->c[Received_Buffer_Idx + 1] = c;
-		Received_Buffer_Idx ++;
-	}
-	
-	
-	//满或者 c 为 0，则添加到链表
-	if(Received_Buffer_Idx == 7 || c == 0x00)
-	{
-
-		UART1_Received_Current->state = 2;//标记为写完可读
-		linked_add_last(&UART1_Received_Head,&UART1_Received_Current);
-		
-		//
-		UART1_Send_Byte(linked_list_size(UART1_Received_Head));//debug
-		
-		//重新创建Buffer
-		//如果没有可空的节点，那么 linked_pick_up_node 会删除head，
-		UART1_Received_Current = linked_pick_up_node(&UART1_Received_Head,UART1_Received_Linked,4);
-		reset_c_buffer(UART1_Received_Current->c,8);
-		Received_Buffer_Idx = 0;
-	}
-	
-
-	
-	
+	_UART1_Received_To_Buffer(c);
 	
 
 }
@@ -109,39 +51,56 @@ void UART1_Received_Count(unsigned char c)
 {
 
 	uart1_received_count ++;
-	
-	if(uart1_received_count == 0xFF)
-	{
-		uart1_received_count = 0;
-	}
-	
-	UART1_Send_Byte(' ');
-	
-	UART1_Send_Byte(uart1_received_count);
-	
-	UART1_Send_Byte(' ');
- 
+	 
 }
 
 
 void UART1_Send_Buffer_Data(void)
 {
+	
 	int i = 0;
-	unsigned char *data = NULL;
+	
+	/*
+	int j = 0;
+
+	int n;
+	int c;
+	
+	char buf[6] = {0x00,0x00,0x00,0x00,0x00,0x00};
+	*/
+	
+	unsigned char buff[usart1_data_node_char_len];
+	
+	//for(i = 0;i<10000;i++)
+	//	for(j = 0;j<10000;j++);
+	
 	while(1)
 	{
-		data = linked_first(UART1_Received_Head);
-		if(data == NULL)
+		i = _UART1_Read_To_Buffer(buff);
+		if(i == 0)
 		{
-			break;
+			return;
 		}
-		for(i = 0;i< 16;i++)
+		for(i = 0;i< usart1_data_node_char_len;i++)
 		{
-			UART1_Send_Byte(data[i]);
+			UART1_Send_Byte(buff[i]);
 		}
-		linked_remove_first(&UART1_Received_Head);
+		
 	}
 	
+	/*
+	UART1_Send_Byte(0xFF);
+	UART1_Send_Byte(0x00);
+	sprintf(buf, "%06lx", (unsigned long)uart1_received_count & 0xFFFFFFUL);
+	UART1_Send_Byte(buf[0]);
+	UART1_Send_Byte(buf[1]);
+	UART1_Send_Byte(buf[2]);
+	UART1_Send_Byte(buf[3]);
+	UART1_Send_Byte(buf[4]);
+	UART1_Send_Byte(buf[5]);
+	UART1_Send_Byte(0x00);
+	UART1_Send_Byte(0xFF);
+	*/
 	
 	
 }
@@ -155,22 +114,25 @@ int main(void)
    
 	USART1_Config(); //USART1 配置 		
   TIM3_Configuration();  
-	Flash_Led_Config(GPIOC,UART1_LED_GPIO_Pin); 
-	Flash_Led_Config(GPIOB,UART1_LED_GPIO_Pin2); 
 	
-	Register_USART1_Callback(UART1_Send_Received_Data);
-	//Register_USART1_Callback(UART1_Received_Count);
+	Flash_Led_Config(GPIOB,UART1_LED_GPIO_Pin); 
+	
+	
+	Register_USART1_Callback(UART1_Flash_LED_On_Received);
+	Register_USART1_Callback(UART1_Received_Count);
 	Register_USART1_Callback(UART1_Received_To_Buffer);
 	
 	
-	//Register_TIM3_Callback(UART1_Send_Buffer_Data);
+	Register_TIM3_Callback(UART1_Send_Buffer_Data);
 
-	init_linked();
+	usart1_data_init();
+  
 
   while (1)
   {	 
-    //UART1Test();
+    
   }
+	
 }
 
 

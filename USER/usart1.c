@@ -15,7 +15,7 @@
 
 
 /**
- * TIM3中断回调函数的指针
+ * 串口中断回调函数的指针
  */
 void (*_m_usart1_irqhandler_ptr[])(unsigned char) = {0,0,0,0,0,0,0,0,0,0};
 
