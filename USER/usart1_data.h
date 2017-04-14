@@ -32,15 +32,17 @@ unsigned char usart1_data_node_chars[ usart1_data_node_len ][ usart1_data_node_c
  */
 void usart1_data_init()
 {
+
 	int i;
 	struct Linked_List_Node *node;
 	
 	usart1_data.char_length = usart1_data_node_char_len;
-	usart1_data.eof = usart1_data_eof;
+	//usart1_data.eof = &usart1_data_eof;
+	usart1_data.eof = NULL;
 	
 	for(i = 0;i<usart1_data_node_len;i++)
 	{
-		usart1_data_nodes[i].c = (usart1_data_node_chars[ i ]);
+		usart1_data_nodes[i].c = usart1_data_node_chars[ i ];
 		
 		node = &usart1_data_nodes[i];
 		linked_add_last( &(usart1_data.free_list) , &node );
@@ -57,7 +59,7 @@ void _UART1_Received_To_Buffer(unsigned char c)
 	linked_list_data_add_char( &usart1_data, c);
 }
 
-/**
+/**********************************
  * 从buffer读取串口写满或者写完的数据
 
 	int i = 0;
@@ -77,6 +79,7 @@ void _UART1_Received_To_Buffer(unsigned char c)
 		
 	}
 
+ *
  */
 int _UART1_Read_To_Buffer(unsigned char * buff)
 {

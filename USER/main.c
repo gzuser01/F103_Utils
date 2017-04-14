@@ -27,9 +27,7 @@ unsigned long uart1_received_count = 0;
 void UART1_Flash_LED_On_Received(unsigned char c)
 {
 
-	Led_Auto_Off(GPIOB,UART1_LED_GPIO_Pin,8);
-	//UART1_Send_Byte(c);
-
+	Led_Auto_Off(GPIOB,UART1_LED_GPIO_Pin,1);
  
 }
 
@@ -123,7 +121,7 @@ int main(void)
 	
 	
 	Register_USART1_Callback(UART1_Flash_LED_On_Received);
-	//Register_USART1_Callback(UART1_Received_Count);
+	Register_USART1_Callback(UART1_Received_Count);
 	Register_USART1_Callback(UART1_Received_To_Buffer);
 	
 	

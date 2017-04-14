@@ -21,7 +21,7 @@ struct Linked_List_Data
 	/** 节点可写入数据的长度 **/
 	int char_length;
 	/** 节点结束标记 **/
-	unsigned char eof;
+	unsigned char *eof; //如果为 NULL,则不判断结束标记,节点写满才可读
 };
 
 /**
@@ -80,8 +80,8 @@ void linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned cha
 	
 	
 	//满或者 c 为 0，则添加到链表
-	if(data_buffer->current_node_write_idx == data_buffer->char_length -1 || 
-		c == data_buffer->eof)
+	if(data_buffer->current_node_write_idx == data_buffer->char_length || 
+		(data_buffer->eof != NULL && c == *data_buffer->eof))
 	{
 
 		//把当前节点加到数据链表
@@ -92,10 +92,9 @@ void linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned cha
 		data_buffer->current_node = NULL;
 	}
 
-	
-	//
-	
 }
+
+
 
 /**
  * 从数据链表中读出一个节点的数据，
@@ -124,6 +123,7 @@ int linked_list_data_read(struct Linked_List_Data *data_buffer,unsigned char * b
 	return 1;
 
 }
+
 
 
 #endif
