@@ -123,7 +123,7 @@ int main(void)
 	
 	
 	Register_USART1_Callback(UART1_Flash_LED_On_Received);
-	Register_USART1_Callback(UART1_Received_Count);
+	//Register_USART1_Callback(UART1_Received_Count);
 	Register_USART1_Callback(UART1_Received_To_Buffer);
 	
 	
