@@ -51,7 +51,7 @@ void UART1_Received_Count(unsigned char c)
 {
 
 	uart1_received_count ++;
-	if(uart1_received_count == 0xFFFFFEUL)
+	if(uart1_received_count == 0xFFFEUL)
 	{
 		uart1_received_count = 0;
 	}
@@ -95,7 +95,7 @@ void UART1_Send_Buffer_Data(void)
 	/*
 	UART1_Send_Byte(0xFF);
 	UART1_Send_Byte(0x00);
-	sprintf(buf, "%06lx", (unsigned long)uart1_received_count & 0xFFFFFFUL);
+	sprintf(buf, "%06lx", (unsigned long)uart1_received_count & 0xFFFFUL);
 	UART1_Send_Byte(buf[0]);
 	UART1_Send_Byte(buf[1]);
 	UART1_Send_Byte(buf[2]);
