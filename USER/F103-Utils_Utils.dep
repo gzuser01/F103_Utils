@@ -1,6 +1,6 @@
 Dependencies for Project 'F103-Utils', Target 'Utils': (DO NOT MODIFY !)
 F (..\CMSIS\startup\startup_stm32f10x_hd.s)(0x58EF1E01)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-IC:\stm32_ws\f103\F103_Utils\USER\RTE\_Utils-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include--pd "__UVISION_VERSION SETA 522" --pd "_RTE_ SETA 1" --pd "STM32F10X_MD SETA 1"--list ..\listing\startup_stm32f10x_hd.lst --xref -o .\startup_stm32f10x_hd.o --depend .\startup_stm32f10x_hd.d)
-F (.\main.c)(0x58F085EA)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\FWlib\inc -I ..\USER-IC:\stm32_ws\f103\F103_Utils\USER\RTE\_Utils-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o .\main.o --omf_browse .\main.crf --depend .\main.d)
+F (.\main.c)(0x58F089D8)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\FWlib\inc -I ..\USER-IC:\stm32_ws\f103\F103_Utils\USER\RTE\_Utils-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o .\main.o --omf_browse .\main.crf --depend .\main.d)
 I (..\CMSIS\stm32f10x.h)(0x4DECC1EC)
 I (..\CMSIS\core_cm3.h)(0x49D96948)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)

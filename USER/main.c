@@ -51,6 +51,10 @@ void UART1_Received_Count(unsigned char c)
 {
 
 	uart1_received_count ++;
+	if(uart1_received_count == 0xFFFFFEUL)
+	{
+		uart1_received_count = 0;
+	}
 	 
 }
 
