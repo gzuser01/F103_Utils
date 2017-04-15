@@ -9,14 +9,18 @@
 /**
  * 链表中缓存节点的个数
  */
-const int usart1_data_node_len = 32;
+const unsigned int usart1_data_node_len = 32;
 
 /**
  * 一个节点里面字节长度
  */
-const int usart1_data_node_char_len = 8;
+const unsigned int usart1_data_node_char_len = 8;
 
-unsigned char usart1_data_eof = 0x00;
+/**
+ * 缓冲结束标记，可以让指针为 null
+ * 如果使用结束标记，发送命令前，只发送一个或多个结束标记有助于先清除缓存
+ */
+unsigned char usart1_data_eof[] = {0xEF,0xFF};
 
 /**
  * 串口缓存数据
@@ -37,8 +41,9 @@ void usart1_data_init()
 	struct Linked_List_Node *node;
 	
 	usart1_data.char_length = usart1_data_node_char_len;
-	//usart1_data.eof = &usart1_data_eof;
-	usart1_data.eof = NULL;
+	usart1_data.eof = usart1_data_eof;
+	usart1_data.eof_length =  (sizeof(usart1_data_eof) / sizeof(usart1_data_eof[0]));
+	//usart1_data.eof = NULL;
 	
 	for(i = 0;i<usart1_data_node_len;i++)
 	{
@@ -81,7 +86,7 @@ void _UART1_Received_To_Buffer(unsigned char c)
 
  *
  */
-int _UART1_Read_To_Buffer(unsigned char * buff)
+unsigned int _UART1_Read_To_Buffer(unsigned char * buff)
 {
 	return linked_list_data_read( &usart1_data, buff);
 }

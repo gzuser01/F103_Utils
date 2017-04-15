@@ -16,12 +16,14 @@ struct Linked_List_Data
 	/** 正在写入数据的节点 **/
 	struct Linked_List_Node *current_node;
 	/** 节点正在写入数据的序号 **/
-	int current_node_write_idx;
+	unsigned int current_node_write_idx;
 	
 	/** 节点可写入数据的长度 **/
 	int char_length;
 	/** 节点结束标记 **/
 	unsigned char *eof; //如果为 NULL,则不判断结束标记,节点写满才可读
+	/** 节点结束标记长度 **/
+	unsigned short int eof_length;
 };
 
 /**
@@ -31,7 +33,8 @@ struct Linked_List_Data
 void linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned char c)
 {
 
-	int i;
+	unsigned int i;
+	unsigned short int new_node = 0;
 	if(data_buffer == NULL)
 	{
 		return;
@@ -77,20 +80,42 @@ void linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned cha
 		data_buffer->current_node->c[ data_buffer->current_node_write_idx ] = c;
 		data_buffer->current_node_write_idx ++;
 	}
-	
-	
-	//满或者 c 为 0，则添加到链表
-	if(data_buffer->current_node_write_idx == data_buffer->char_length || 
-		(data_buffer->eof != NULL && c == *data_buffer->eof))
-	{
 
+	//写满，无论是否有结束标记
+	if(data_buffer->current_node_write_idx == data_buffer->char_length)
+	{
+		new_node = 1;
+	}
+	else
+	{	
+		//有结束标记并且写了足够的字符
+		if(data_buffer->eof != NULL && data_buffer->eof_length != 0 &&
+			data_buffer->current_node_write_idx >= data_buffer->eof_length)
+		{
+			//先设置为可以到下一个节点
+			new_node = 1;
+			for(i = 0;i < data_buffer->eof_length;i++)
+			{
+				//只有字符不匹配
+				if(data_buffer->current_node->c[ data_buffer->current_node_write_idx - i - 1 ] != data_buffer->eof[ data_buffer->eof_length - i - 1 ] )
+				{
+					new_node = 0;
+				}
+			}
+		}
+		
+	}
+	
+	//添加到链表	
+	if(new_node == 1)
+	{
 		//把当前节点加到数据链表
 		linked_add_last( &data_buffer->data_list, &data_buffer->current_node );
-		
-		
+
 		//释放当前写入的节点
 		data_buffer->current_node = NULL;
 	}
+		
 
 }
 
@@ -101,7 +126,7 @@ void linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned cha
  * 如果有数据返回 1，否则返回 0，
  * 由于data_buffer读取后会被覆盖，因此数据会memcpy到 buff
  */
-int linked_list_data_read(struct Linked_List_Data *data_buffer,unsigned char * buff)
+unsigned int linked_list_data_read(struct Linked_List_Data *data_buffer,unsigned char * buff)
 {
 	struct Linked_List_Node *readed_node;
 	
