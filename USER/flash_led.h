@@ -14,7 +14,7 @@
 **********************************************************************************/
 
 #include "led.h"
-#include "tim3.h"
+#include "timx.h"
 
 uint16_t _m_Flash_LED_GPIO_Pin[] = {0,0,0,0,0,0,0,0,0,0};
 GPIO_TypeDef *_m_Flash_LED_GPIOx[] = {0,0,0,0,0,0,0,0,0,0};
@@ -64,9 +64,9 @@ void Led_Auto_Off(GPIO_TypeDef *GPIOx,uint16_t GPIO_Pin,unsigned long delay)
 
 
 /**
- * TIM3中断的自动关闭LED的回调函数
+ * TIMx中断的自动关闭LED的回调函数
  */
-void Auto_Off_TIM3_CallBack(void)  
+void Auto_Off_TIMx_CallBack(void)  
 {  
 	int i;
 	
@@ -95,7 +95,7 @@ void Auto_Off_TIM3_CallBack(void)
  */
 void Flash_Led_Config(GPIO_TypeDef *GPIOx,uint16_t GPIO_Pin)
 {
-	Register_TIM3_Callback(Auto_Off_TIM3_CallBack);
+	Register_TIMx_Callback(TIM4,Auto_Off_TIMx_CallBack);
 	LED_Config(GPIOx, GPIO_Pin);
 }
 

@@ -12,7 +12,7 @@
 .\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\main.o: flash_led.h
 .\main.o: led.h
-.\main.o: tim3.h
+.\main.o: timx.h
 .\main.o: ..\FWlib\inc\stm32f10x_tim.h
 .\main.o: ..\FWlib\inc\misc.h
 .\main.o: usart1_data.h

@@ -4,7 +4,7 @@
 ".\stm32f10x_it.o"
 ".\usart1.o"
 ".\led.o"
-".\tim3.o"
+".\timx.o"
 ".\stm32f10x_gpio.o"
 ".\stm32f10x_rcc.o"
 ".\stm32f10x_usart.o"

@@ -410,11 +410,6 @@
               <FilePath>.\led.c</FilePath>
             </File>
             <File>
-              <FileName>tim3.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\tim3.c</FilePath>
-            </File>
-            <File>
               <FileName>flash_led.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\flash_led.h</FilePath>
@@ -433,6 +428,11 @@
               <FileName>usart1_data.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\usart1_data.h</FilePath>
+            </File>
+            <File>
+              <FileName>timx.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\timx.c</FilePath>
             </File>
           </Files>
         </Group>

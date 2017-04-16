@@ -12,6 +12,7 @@
 #include "flash_led.h"
 #include "usart1_data.h"
 
+
 #include <stdlib.h>
 
 
@@ -115,7 +116,10 @@ int main(void)
 	SystemInit();	//配置系统时钟为 72M 
    
 	USART1_Config(); //USART1 配置 		
-  TIM3_Configuration();  
+	
+	TIMx_Configuration(TIM2,NVIC_PriorityGroup_2,0,0);
+  TIMx_Configuration(TIM3,NVIC_PriorityGroup_2,1,0);  
+	TIMx_Configuration(TIM4,NVIC_PriorityGroup_2,2,0); 
 	
 	Flash_Led_Config(GPIOB,UART1_LED_GPIO_Pin); 
 	
@@ -125,7 +129,7 @@ int main(void)
 	Register_USART1_Callback(UART1_Received_To_Buffer);
 	
 	
-	Register_TIM3_Callback(UART1_Send_Buffer_Data);
+	Register_TIMx_Callback(TIM3,UART1_Send_Buffer_Data);
 
 	usart1_data_init();
   
