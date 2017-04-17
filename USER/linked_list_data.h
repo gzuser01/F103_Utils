@@ -7,6 +7,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+
+/**
+ * 链表数据
+ */
 struct Linked_List_Data
 {
 	/** 数据链接的头节点 **/
@@ -24,21 +29,44 @@ struct Linked_List_Data
 	unsigned char *eof; //如果为 NULL,则不判断结束标记,节点写满才可读
 	/** 节点结束标记长度 **/
 	unsigned short int eof_length;
+	
+	/** 临时变量 
+	 *  linked_list_data_add_char 或 linked_list_data_read 会使用的在 linked_add_last 或 linked_remove_first 操作时记录最后一个节点的指针
+	 *  或 从数据链表读取数据后,记录数据链表的第一个节点的指针,从数据链表删除后,添加到空闲链表
+	 */
+	struct Linked_List_Node *var_node;
+	
+	/** 写锁 **/
+	unsigned short int write_lock;
+	/** 读锁 **/
+	unsigned short int read_lock;
 };
 
 /**
  * 向当前写入数据的节点写入一个字符
  * 如果节点写满或者字符是结束标记，那么写入数据的节点会添加到数据链表
+ * 如果数据写入成功返回 1，否则返回 0，如果被锁定写或者读则不写入而丢失，返回0
  */
-void linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned char c)
+unsigned int linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned char c)
 {
-
+	
 	unsigned int i;
-	unsigned short int new_node = 0;
+	unsigned short int new_node;
+
+
 	if(data_buffer == NULL)
 	{
-		return;
+		return 0;
 	}
+	
+	//被锁
+	if(data_buffer->write_lock | data_buffer->read_lock)
+	{
+		return 0;
+	}
+	
+	//加锁
+	data_buffer->write_lock = 1;
 	
 	if(data_buffer->current_node == NULL)
 	{
@@ -48,19 +76,21 @@ void linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned cha
 			if(data_buffer->data_list != NULL)
 			{
 				data_buffer->current_node = data_buffer->data_list;
-				linked_remove_first( &data_buffer->data_list );
+				linked_remove_first( &data_buffer->data_list,&data_buffer->var_node );
 			}
 		}
 		else
 		{
 			data_buffer->current_node = data_buffer->free_list;
-			linked_remove_first( &data_buffer->free_list );
+			linked_remove_first( &data_buffer->free_list,&data_buffer->var_node );
 		}
 		
 		//没有可用的节点
 		if(data_buffer->current_node == NULL)
 		{
-			return;
+			//解锁
+			data_buffer->write_lock = 0;
+			return 0;
 		}
 		else
 		{
@@ -74,12 +104,14 @@ void linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned cha
 		}
 	}
 	
-	
+	//写入数据
 	if(data_buffer->current_node_write_idx < data_buffer->char_length)
 	{
 		data_buffer->current_node->c[ data_buffer->current_node_write_idx ] = c;
 		data_buffer->current_node_write_idx ++;
 	}
+	
+	new_node = 0;
 
 	//写满，无论是否有结束标记
 	if(data_buffer->current_node_write_idx == data_buffer->char_length)
@@ -110,12 +142,15 @@ void linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned cha
 	if(new_node == 1)
 	{
 		//把当前节点加到数据链表
-		linked_add_last( &data_buffer->data_list, &data_buffer->current_node );
+		linked_add_last( &data_buffer->data_list, &data_buffer->current_node,&data_buffer->var_node );
 
 		//释放当前写入的节点
 		data_buffer->current_node = NULL;
 	}
-		
+	
+	//解锁
+	data_buffer->write_lock = 0;
+	return 1;
 
 }
 
@@ -123,27 +158,42 @@ void linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned cha
 
 /**
  * 从数据链表中读出一个节点的数据，
- * 如果有数据返回 1，否则返回 0，
+ * 如果有数据返回 1，否则返回 0，如果被锁定写或者读，也返回0
  * 由于data_buffer读取后会被覆盖，因此数据会memcpy到 buff
+ *
+ * 
  */
 unsigned int linked_list_data_read(struct Linked_List_Data *data_buffer,unsigned char * buff)
 {
-	struct Linked_List_Node *readed_node;
+
 	
 	if(data_buffer == NULL || data_buffer->data_list == NULL)
 	{
 		return 0;
 	}
+	
+	//被锁
+	if(data_buffer->write_lock | data_buffer->read_lock)
+	{
+		return 0;
+	}
+	//加锁
+	data_buffer->read_lock = 1;
+		
 	//把数据复制出来
 	memcpy(buff,data_buffer->data_list->c,data_buffer->char_length);
 	
+	
 	//记录已读节点的指针
-	readed_node = data_buffer->data_list;
+	//data_buffer->var_node = data_buffer->data_list;
+	//把数据节点加到空闲链表
+	linked_add_last( &data_buffer->free_list, &data_buffer->data_list,&data_buffer->var_node );
 	
 	//从数据节点删除第一个(已读节点)
-	linked_remove_first( &data_buffer->data_list );
-	//把已读节点加到空闲链表
-	linked_add_last( &data_buffer->free_list, &readed_node );
+	linked_remove_first( &data_buffer->data_list,&data_buffer->var_node );
+	
+	//解锁
+	data_buffer->read_lock = 0;
 	
 	return 1;
 

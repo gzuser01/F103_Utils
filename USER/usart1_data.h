@@ -9,7 +9,7 @@
 /**
  * 链表中缓存节点的个数
  */
-const unsigned int usart1_data_node_len = 32;
+const unsigned int usart1_data_node_len = 4;
 
 /**
  * 一个节点里面字节长度
@@ -28,6 +28,7 @@ unsigned char usart1_data_eof[] = {0xEF,0xFF};
 struct Linked_List_Data usart1_data;
 
 struct Linked_List_Node usart1_data_nodes[ usart1_data_node_len ];
+
 unsigned char usart1_data_node_chars[ usart1_data_node_len ][ usart1_data_node_char_len ];
 
 /**
@@ -40,6 +41,8 @@ void usart1_data_init()
 	int i;
 	struct Linked_List_Node *node;
 	
+	usart1_data.read_lock = 0;
+	usart1_data.write_lock = 0;
 	usart1_data.char_length = usart1_data_node_char_len;
 	usart1_data.eof = usart1_data_eof;
 	usart1_data.eof_length =  (sizeof(usart1_data_eof) / sizeof(usart1_data_eof[0]));
@@ -50,7 +53,7 @@ void usart1_data_init()
 		usart1_data_nodes[i].c = usart1_data_node_chars[ i ];
 		
 		node = &usart1_data_nodes[i];
-		linked_add_last( &(usart1_data.free_list) , &node );
+		linked_add_last( &(usart1_data.free_list) , &node ,&(usart1_data.var_node));
 	}
 	
 }
@@ -59,9 +62,9 @@ void usart1_data_init()
  * 把串口的字符加到buffer中，
  * 可使用 Register_USART1_Callback 注册
  */ 
-void _UART1_Received_To_Buffer(unsigned char c)
+unsigned int _UART1_Received_To_Buffer(unsigned char c)
 {
-	linked_list_data_add_char( &usart1_data, c);
+	return linked_list_data_add_char( &usart1_data, c);
 }
 
 /**********************************
