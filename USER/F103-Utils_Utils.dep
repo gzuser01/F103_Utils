@@ -1,6 +1,6 @@
 Dependencies for Project 'F103-Utils', Target 'Utils': (DO NOT MODIFY !)
 F (..\CMSIS\startup\startup_stm32f10x_hd.s)(0x58EF1E01)(--cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"-IC:\stm32_ws\f103\F103_Utils\USER\RTE\_Utils-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include--pd "__UVISION_VERSION SETA 522" --pd "_RTE_ SETA 1" --pd "STM32F10X_MD SETA 1"--list ..\listing\startup_stm32f10x_hd.lst --xref -o .\startup_stm32f10x_hd.o --depend .\startup_stm32f10x_hd.d)
-F (.\main.c)(0x58F47C08)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\FWlib\inc -I ..\USER-IC:\stm32_ws\f103\F103_Utils\USER\RTE\_Utils-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o .\main.o --omf_browse .\main.crf --depend .\main.d)
+F (.\main.c)(0x58F48B5B)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\FWlib\inc -I ..\USER-IC:\stm32_ws\f103\F103_Utils\USER\RTE\_Utils-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o .\main.o --omf_browse .\main.crf --depend .\main.d)
 I (..\CMSIS\stm32f10x.h)(0x4DECC1EC)
 I (..\CMSIS\core_cm3.h)(0x49D96948)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x57F606B8)
@@ -16,7 +16,7 @@ I (led.h)(0x58EDD687)
 I (timx.h)(0x58F4253D)
 I (..\FWlib\inc\stm32f10x_tim.h)(0x49D9694A)
 I (..\FWlib\inc\misc.h)(0x49D9694A)
-I (usart1_data.h)(0x58F47B40)
+I (usart1_data.h)(0x58F48A32)
 I (linked_list.h)(0x58F47A78)
 I (linked_list_data.h)(0x58F48054)
 I (C:\Keil_v5\ARM\ARMCC\include\stdlib.h)(0x57F606B8)
@@ -58,7 +58,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x57F606B8)
 F (.\flash_led.h)(0x58F4253D)()
 F (.\linked_list.h)(0x58F47A78)()
 F (.\linked_list_data.h)(0x58F48054)()
-F (.\usart1_data.h)(0x58F47B40)()
+F (.\usart1_data.h)(0x58F48A32)()
 F (.\timx.c)(0x58F4253D)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\FWlib\inc -I ..\USER-IC:\stm32_ws\f103\F103_Utils\USER\RTE\_Utils-IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include-IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include-D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o .\timx.o --omf_browse .\timx.crf --depend .\timx.d)
 I (timx.h)(0x58F4253D)
 I (..\FWlib\inc\stm32f10x_tim.h)(0x49D9694A)

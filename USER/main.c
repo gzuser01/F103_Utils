@@ -48,6 +48,9 @@ void UART1_Received_To_Buffer(unsigned char c)
 		UART1_Send_Byte(c);
 		UART1_Send_Byte(0xFF);
 		UART1_Send_Byte(0xFF);
+		UART1_Send_Byte(0xFF);
+		UART1_Send_Byte(0xFF);
+		UART1_Send_Byte(0xFF);
 	}
 	
 

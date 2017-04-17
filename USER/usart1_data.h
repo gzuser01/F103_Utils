@@ -9,7 +9,7 @@
 /**
  * 链表中缓存节点的个数
  */
-const unsigned int usart1_data_node_len = 4;
+const unsigned int usart1_data_node_len = 16;
 
 /**
  * 一个节点里面字节长度
