@@ -43,6 +43,7 @@ void usart1_data_init()
 	
 	usart1_data.read_lock = 0;
 	usart1_data.write_lock = 0;
+	usart1_data.lock_buffer_length = 0;
 	usart1_data.char_length = usart1_data_node_char_len;
 	usart1_data.eof = usart1_data_eof;
 	usart1_data.eof_length =  (sizeof(usart1_data_eof) / sizeof(usart1_data_eof[0]));

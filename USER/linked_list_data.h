@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define LOCK_BUFFER_LENGTH 8
 
 
 /**
@@ -40,6 +41,11 @@ struct Linked_List_Data
 	unsigned short int write_lock;
 	/** 读锁 **/
 	unsigned short int read_lock;
+	
+	/** 如果写锁，那么会加到这个buffer **/
+	unsigned char lock_buffer[LOCK_BUFFER_LENGTH];
+	/** 已记录lock buffer的字符个数 **/
+	short int lock_buffer_length;
 };
 
 /**
@@ -47,26 +53,11 @@ struct Linked_List_Data
  * 如果节点写满或者字符是结束标记，那么写入数据的节点会添加到数据链表
  * 如果数据写入成功返回 1，否则返回 0，如果被锁定写或者读则不写入而丢失，返回0
  */
-unsigned int linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned char c)
+unsigned int linked_list_data_add_char0(struct Linked_List_Data *data_buffer,unsigned char c)
 {
 	
 	unsigned int i;
 	unsigned short int new_node;
-
-
-	if(data_buffer == NULL)
-	{
-		return 0;
-	}
-	
-	//被锁
-	if(data_buffer->write_lock | data_buffer->read_lock)
-	{
-		return 0;
-	}
-	
-	//加锁
-	data_buffer->write_lock = 1;
 	
 	if(data_buffer->current_node == NULL)
 	{
@@ -88,8 +79,6 @@ unsigned int linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsi
 		//没有可用的节点
 		if(data_buffer->current_node == NULL)
 		{
-			//解锁
-			data_buffer->write_lock = 0;
 			return 0;
 		}
 		else
@@ -147,11 +136,57 @@ unsigned int linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsi
 		//释放当前写入的节点
 		data_buffer->current_node = NULL;
 	}
-	
-	//解锁
-	data_buffer->write_lock = 0;
+
 	return 1;
 
+}
+
+
+unsigned int linked_list_data_add_char(struct Linked_List_Data *data_buffer,unsigned char c)
+{
+	int i;
+
+	if(data_buffer == NULL)
+	{
+		return 0;
+	}
+	
+		//被锁
+	if(data_buffer->write_lock | data_buffer->read_lock)
+	{
+		
+		//锁BUFF有空间，那么存到锁BUFF，否则丢弃数据
+		if(data_buffer->lock_buffer_length < LOCK_BUFFER_LENGTH)
+		{
+			data_buffer->lock_buffer[data_buffer->lock_buffer_length] = c;//从0开始
+			data_buffer->lock_buffer_length ++;//添加一个后加1
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	
+	//加锁
+	data_buffer->write_lock = 1;
+	
+	//先处理锁缓存的数据
+	if(data_buffer->lock_buffer_length > 0) //有缓存个数从1开始，为0表示没有
+	{
+		for(i = 0; i< data_buffer->lock_buffer_length;i++)
+		{
+			linked_list_data_add_char0(data_buffer,data_buffer->lock_buffer[i]);
+		}
+		data_buffer->lock_buffer_length = 0; //重置为0
+	}
+	
+	linked_list_data_add_char0(data_buffer,c);
+		
+	//解锁
+	data_buffer->write_lock = 0;
+	
+	return 1;
 }
 
 
