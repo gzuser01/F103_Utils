@@ -20,7 +20,10 @@ void (*_m_tim4_irqhandler_ptr[])(void) = {0,0,0,0,0,0,0,0,0,0};
  */
 void (*_m_tim5_irqhandler_ptr[])(void) = {0,0,0,0,0,0,0,0,0,0};
 
-void TIMx_Configuration(TIM_TypeDef* TIMx,uint32_t NVIC_PriorityGroup,
+void TIMx_Configuration(TIM_TypeDef* TIMx,
+	uint16_t TIM_Prescaler,
+	uint16_t TIM_Period,
+	uint32_t NVIC_PriorityGroup,
 	uint8_t NVIC_IRQChannelPreemptionPriority,
 	uint8_t NVIC_IRQChannelSubPriority)    
 {  
@@ -46,8 +49,8 @@ void TIMx_Configuration(TIM_TypeDef* TIMx,uint32_t NVIC_PriorityGroup,
     
   TIM_ClearITPendingBit(TIMx, TIM_IT_Update);  
     
-  TIM_TimeBaseStructure.TIM_Period = 99; //99 º¥ 0.01√Î÷–∂œ
-  TIM_TimeBaseStructure.TIM_Prescaler = 7199;
+  TIM_TimeBaseStructure.TIM_Period = TIM_Period; //99 º¥ 0.01√Î÷–∂œ
+  TIM_TimeBaseStructure.TIM_Prescaler = TIM_Prescaler;//7199
   TIM_TimeBaseStructure.TIM_ClockDivision = 0x0;  
   TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  
   TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure);  

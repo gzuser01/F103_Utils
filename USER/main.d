@@ -20,3 +20,4 @@
 .\main.o: linked_list_data.h
 .\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\main.o: pwm_led.h

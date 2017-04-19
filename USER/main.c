@@ -1,9 +1,5 @@
 
 /**************************************
- * 文件名  ：main.c
- * 描述    ：通过串口调试软件，向板子发送数据，板子接收到数据后，立即回传给电脑。         
- * 实验平台：MINI STM32开发板 基于STM32F103C8T6
- * 库版本  ：ST3.0.0  																										  
 
 *********************************************************/
 
@@ -11,6 +7,7 @@
 #include "usart1.h"
 #include "flash_led.h"
 #include "usart1_data.h"
+#include "pwm_led.h"
 
 
 #include <stdlib.h>
@@ -130,12 +127,13 @@ int main(void)
 {  
 	     
 	SystemInit();	//配置系统时钟为 72M 
-   
+  
+	/*
 	USART1_Config(); //USART1 配置 		
 	
-	TIMx_Configuration(TIM2,NVIC_PriorityGroup_2,0,0);
-  TIMx_Configuration(TIM3,NVIC_PriorityGroup_2,1,0);  
-	TIMx_Configuration(TIM4,NVIC_PriorityGroup_2,2,0); 
+	TIMx_Configuration(TIM2,7199,99,NVIC_PriorityGroup_2,0,0);
+  TIMx_Configuration(TIM3,7199,99,NVIC_PriorityGroup_2,1,0);  
+	TIMx_Configuration(TIM4,7199,99,NVIC_PriorityGroup_2,2,0); 
 	
 	Flash_Led_Config(GPIOB,UART1_R_LED_GPIO_Pin | UART1_W_LED_GPIO_Pin ); 
 	
@@ -148,6 +146,14 @@ int main(void)
 	Register_TIMx_Callback(TIM3,UART1_Send_Buffer_Data);
 
 	usart1_data_init();
+	*/
+	
+	//选择一个定时器，根据通道对应引脚，指定对应的 Output Compare 和引脚
+	PWM_LED_Config(TIM2,TIM_Output_Compare_2,0,999,GPIOA,GPIO_Pin_1);
+
+	//选择另外一个定时器，更新CCR值
+	TIMx_Configuration(TIM3,7199,99,NVIC_PriorityGroup_2,3,3);
+	Register_TIMx_Callback(TIM3,PWM_LED_Callback);
   
 
   while (1)

@@ -434,6 +434,11 @@
               <FileType>1</FileType>
               <FilePath>.\timx.c</FilePath>
             </File>
+            <File>
+              <FileName>pwm_led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\pwm_led.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

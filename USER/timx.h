@@ -8,7 +8,9 @@
 /**
  * ≈‰÷√ TIMx ∆’Õ®∂® ±∆˜
  */
-void TIMx_Configuration(TIM_TypeDef* TIMx,
+void TIMx_Configuration(TIM_TypeDef* TIMx,	
+	uint16_t TIM_Prescaler,
+	uint16_t TIM_Period,
 	uint32_t NVIC_PriorityGroup,uint8_t NVIC_IRQChannelPreemptionPriority,uint8_t NVIC_IRQChannelSubPriority);
 
 void Register_TIMx_Callback(TIM_TypeDef* TIMx,void (* ptr)());  
