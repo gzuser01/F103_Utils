@@ -1,4 +1,4 @@
-SET PATH=C:\Keil_v5\ARM\ARMCC\Bin;C:\Program Files (x86)\STMicroelectronics\st_toolset\asm;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\COSMIC\CXSTM8
+SET PATH=C:\Keil_v5\ARM\ARMCC\Bin;C:\Program Files (x86)\STMicroelectronics\st_toolset\asm;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\
 SET CPU_TYPE=STM32F103C8
 SET CPU_VENDOR=STMicroelectronics
 SET UV2_TARGET=Utils
@@ -9,6 +9,7 @@ SET CPU_CLOCK=0x007A1200
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\usart1.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\led.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\timx.__i"
+"C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\gpio.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\stm32f10x_gpio.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\stm32f10x_rcc.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via ".\stm32f10x_usart.__i"

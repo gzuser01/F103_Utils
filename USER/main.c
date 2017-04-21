@@ -8,7 +8,7 @@
 #include "flash_led.h"
 #include "usart1_data.h"
 #include "pwm_led.h"
-
+#include "gpio.h"
 
 #include <stdlib.h>
 
@@ -125,10 +125,12 @@ void UART1_Send_Buffer_Data(void)
 
 int main(void)
 {  
+	char ReadValue;
+
 	     
 	SystemInit();	//配置系统时钟为 72M 
   
-	/*
+	
 	USART1_Config(); //USART1 配置 		
 	
 	TIMx_Configuration(TIM2,7199,99,NVIC_PriorityGroup_2,0,0);
@@ -146,19 +148,23 @@ int main(void)
 	Register_TIMx_Callback(TIM3,UART1_Send_Buffer_Data);
 
 	usart1_data_init();
-	*/
 	
+	/*
 	//选择一个定时器，根据通道对应引脚，指定对应的 Output Compare 和引脚
 	PWM_LED_Config(TIM2,TIM_Output_Compare_2,0,999,GPIOA,GPIO_Pin_1);
 
 	//选择另外一个定时器，更新CCR值
 	TIMx_Configuration(TIM3,7199,99,NVIC_PriorityGroup_2,3,3);
 	Register_TIMx_Callback(TIM3,PWM_LED_Callback);
-  
+  */
+	
+	GPIO_Config(GPIOC,GPIO_Pin_13,GPIO_Mode_IPD,GPIO_Speed_2MHz);
 
   while (1)
   {	 
-    
+		
+		ReadValue = GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_13);
+    UART1_Send_Byte(ReadValue);
   }
 	
 }

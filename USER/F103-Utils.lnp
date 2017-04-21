@@ -5,6 +5,7 @@
 ".\usart1.o"
 ".\led.o"
 ".\timx.o"
+".\gpio.o"
 ".\stm32f10x_gpio.o"
 ".\stm32f10x_rcc.o"
 ".\stm32f10x_usart.o"

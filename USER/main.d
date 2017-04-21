@@ -21,3 +21,4 @@
 .\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 .\main.o: pwm_led.h
+.\main.o: gpio.h

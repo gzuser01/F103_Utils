@@ -1,5 +1,5 @@
 .\led.o: led.c
-.\led.o: led.h
+.\led.o: gpio.h
 .\led.o: ..\CMSIS\stm32f10x.h
 .\led.o: ..\CMSIS\core_cm3.h
 .\led.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
@@ -9,5 +9,6 @@
 .\led.o: ..\CMSIS\stm32f10x.h
 .\led.o: ..\FWlib\inc\stm32f10x_rcc.h
 .\led.o: ..\FWlib\inc\stm32f10x_usart.h
+.\led.o: led.h
 .\led.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\led.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h

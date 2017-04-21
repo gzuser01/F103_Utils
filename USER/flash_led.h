@@ -13,6 +13,9 @@
  * Led_Auto_Off(GPIOB,GPIO_Pin_12,1000); //10 √Î
 **********************************************************************************/
 
+#ifndef __FLASH_LED_H
+#define	__FLASH_LED_H
+
 #include "led.h"
 #include "timx.h"
 
@@ -98,4 +101,8 @@ void Flash_Led_Config(GPIO_TypeDef *GPIOx,uint16_t GPIO_Pin)
 	Register_TIMx_Callback(TIM4,Auto_Off_TIMx_CallBack);
 	LED_Config(GPIOx, GPIO_Pin);
 }
+
+
+#endif 
+
 
