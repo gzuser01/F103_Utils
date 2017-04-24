@@ -1,13 +1,9 @@
 /***************************************
- * 文件名  ：usart1.c
- * 描述    ：配置USART1         
- * 实验平台：MINI STM32开发板 基于STM32F103C8T6
- * 硬件连接：------------------------
- *          | PA9  - USART1(Tx)      |
- *          | PA10 - USART1(Rx)      |
- *           ------------------------
- * 库版本  ：ST3.0.0  
-
+ * ------------------------
+ * | PA9  - USART1(Tx)      |
+ * | PA10 - USART1(Rx)      |
+ * ------------------------
+ * 
 **********************************************************************************/
 
 #include "usart1.h"
@@ -69,14 +65,14 @@ void USART1_Config(void)
 }
 
  /*发送一个字节数据*/
-void UART1_Send_Byte(unsigned char SendData)
+void _USART1_Send_Byte(unsigned char SendData)
 {	   
 	USART_SendData(USART1,SendData);
 	while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);	    
 }  
 
 /*接收一个字节数据*/
-unsigned char UART1_Get_Byte(unsigned char* GetData)
+unsigned char _USART1_Get_Byte(unsigned char* GetData)
 {   	   
 	if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET)
 	{  
@@ -95,7 +91,7 @@ void USART1_IRQHandler(void)
 	int i;
 	unsigned char c = 0;
 		
-	while(UART1_Get_Byte(&c))
+	while(_USART1_Get_Byte(&c))
 	{
 		
 		

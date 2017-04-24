@@ -35,3 +35,8 @@ void GPIO_Config(GPIO_TypeDef *GPIOx,uint16_t GPIO_Pin,GPIOMode_TypeDef GPIO_Mod
 	
 }
 
+void Out_PP_GPIO_Config(GPIO_TypeDef *GPIOx,uint16_t GPIO_Pin)
+{
+	GPIO_Config(GPIOx,GPIO_Pin,GPIO_Mode_Out_PP,GPIO_Speed_50MHz);
+}
+
