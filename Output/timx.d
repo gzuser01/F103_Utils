@@ -1,0 +1,13 @@
+..\output\timx.o: timx.c
+..\output\timx.o: timx.h
+..\output\timx.o: ..\FWlib\inc\stm32f10x_tim.h
+..\output\timx.o: ..\CMSIS\stm32f10x.h
+..\output\timx.o: ..\CMSIS\core_cm3.h
+..\output\timx.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\timx.o: ..\CMSIS\system_stm32f10x.h
+..\output\timx.o: ..\USER\stm32f10x_conf.h
+..\output\timx.o: ..\FWlib\inc\stm32f10x_gpio.h
+..\output\timx.o: ..\CMSIS\stm32f10x.h
+..\output\timx.o: ..\FWlib\inc\stm32f10x_rcc.h
+..\output\timx.o: ..\FWlib\inc\stm32f10x_usart.h
+..\output\timx.o: ..\FWlib\inc\misc.h

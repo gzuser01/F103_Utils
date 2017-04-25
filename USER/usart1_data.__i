@@ -1,6 +1,0 @@
--c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork -I ..\CMSIS -I ..\FWlib\inc -I ..\USER
--IC:\stm32_ws\f103\F103_Utils\USER\RTE\_Utils
--IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include
--IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include
--D__UVISION_VERSION="522" -D_RTE_ -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD
--o .\usart1_data.o --omf_browse .\usart1_data.crf --depend .\usart1_data.d "usart1_data.c"

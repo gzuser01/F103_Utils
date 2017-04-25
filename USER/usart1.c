@@ -6,7 +6,9 @@
  * 
 **********************************************************************************/
 
+
 #include "usart1.h"
+#include "gpio.h" 
 #include "misc.h" 
 
 
@@ -17,10 +19,9 @@ void (*_m_usart1_irqhandler_ptr[])(unsigned char) = {0,0,0,0,0,0,0,0,0,0};
 
 
 
-void USART1_Config(void)
+void USART1_Config(GPIO_TypeDef *Tx_GPIOx,uint16_t Tx_GPIO_Pin,GPIO_TypeDef *Rx_GPIOx,uint16_t Rx_GPIO_Pin)
 {
 
-	GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 	
@@ -34,17 +35,12 @@ void USART1_Config(void)
 	
 	
 	/* 使能 USART1 时钟*/
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA, ENABLE); 
-
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE); 
+	
 	/* USART1 使用IO端口配置 */    
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP; //复用推挽输出
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);    
-  
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;	//浮空输入
-  GPIO_Init(GPIOA, &GPIO_InitStructure);   //初始化GPIOA
+	GPIO_Config(Tx_GPIOx,Tx_GPIO_Pin,GPIO_Mode_AF_PP,GPIO_Speed_50MHz);//Tx 复用推挽输出
+	GPIO_Config(Rx_GPIOx,Rx_GPIO_Pin,GPIO_Mode_IN_FLOATING,GPIO_Speed_50MHz);//Rx 浮空输入
+	
 	  
 	/* USART1 工作模式配置 */
 	USART_InitStructure.USART_BaudRate = 115200;	//波特率设置：115200
@@ -65,14 +61,14 @@ void USART1_Config(void)
 }
 
  /*发送一个字节数据*/
-void _USART1_Send_Byte(unsigned char SendData)
+void USART1_Send_Byte(unsigned char SendData)
 {	   
 	USART_SendData(USART1,SendData);
 	while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);	    
 }  
 
 /*接收一个字节数据*/
-unsigned char _USART1_Get_Byte(unsigned char* GetData)
+unsigned char USART1_Get_Byte(unsigned char* GetData)
 {   	   
 	if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET)
 	{  
@@ -91,7 +87,7 @@ void USART1_IRQHandler(void)
 	int i;
 	unsigned char c = 0;
 		
-	while(_USART1_Get_Byte(&c))
+	while(USART1_Get_Byte(&c))
 	{
 		
 		

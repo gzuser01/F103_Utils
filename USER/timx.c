@@ -20,15 +20,12 @@ void (*_m_tim4_irqhandler_ptr[])(void) = {0,0,0,0,0,0,0,0,0,0};
  */
 void (*_m_tim5_irqhandler_ptr[])(void) = {0,0,0,0,0,0,0,0,0,0};
 
-void TIMx_Configuration(TIM_TypeDef* TIMx,
+
+void TIMx_Config(TIM_TypeDef* TIMx,
 	uint16_t TIM_Prescaler,
-	uint16_t TIM_Period,
-	uint32_t NVIC_PriorityGroup,
-	uint8_t NVIC_IRQChannelPreemptionPriority,
-	uint8_t NVIC_IRQChannelSubPriority)    
+	uint16_t TIM_Period)    
 {  
   TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;  
-	NVIC_InitTypeDef NVIC_InitStructure;    
 	
 	if(TIMx == TIM2)
 	{
@@ -58,8 +55,20 @@ void TIMx_Configuration(TIM_TypeDef* TIMx,
   TIM_ITConfig(TIMx, TIM_IT_Update, ENABLE );  
   TIM_Cmd(TIMx,ENABLE);  
 	
+}
+
+void TIMx_With_NVIC_Config(TIM_TypeDef* TIMx,
+	uint16_t TIM_Prescaler,
+	uint16_t TIM_Period,
+	uint32_t NVIC_PriorityGroup,
+	uint8_t NVIC_IRQChannelPreemptionPriority,
+	uint8_t NVIC_IRQChannelSubPriority)    
+{  
+  
+	NVIC_InitTypeDef NVIC_InitStructure;    
 	
-	
+	TIMx_Config(TIMx,TIM_Prescaler,TIM_Period);
+		
   //配置中断优先级  
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup);    
  

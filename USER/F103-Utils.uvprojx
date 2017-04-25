@@ -47,7 +47,7 @@
             <NotGenerated>0</NotGenerated>
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
-          <OutputDirectory>.\</OutputDirectory>
+          <OutputDirectory>..\Output\</OutputDirectory>
           <OutputName>F103-Utils</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
@@ -458,6 +458,11 @@
               <FileName>pwm_led.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\pwm_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>srf05_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\srf05_test.h</FilePath>
             </File>
           </Files>
         </Group>

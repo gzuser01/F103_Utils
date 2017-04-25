@@ -1,0 +1,15 @@
+..\output\pwm_led.o: pwm_led.c
+..\output\pwm_led.o: pwm_led.h
+..\output\pwm_led.o: pwm.h
+..\output\pwm_led.o: ..\CMSIS\stm32f10x.h
+..\output\pwm_led.o: ..\CMSIS\core_cm3.h
+..\output\pwm_led.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\pwm_led.o: ..\CMSIS\system_stm32f10x.h
+..\output\pwm_led.o: ..\USER\stm32f10x_conf.h
+..\output\pwm_led.o: ..\FWlib\inc\stm32f10x_gpio.h
+..\output\pwm_led.o: ..\CMSIS\stm32f10x.h
+..\output\pwm_led.o: ..\FWlib\inc\stm32f10x_rcc.h
+..\output\pwm_led.o: ..\FWlib\inc\stm32f10x_usart.h
+..\output\pwm_led.o: ..\FWlib\inc\stm32f10x_tim.h
+..\output\pwm_led.o: ..\FWlib\inc\misc.h
+..\output\pwm_led.o: timx.h

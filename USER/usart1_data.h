@@ -26,7 +26,7 @@ void usart1_data_init(void);
  * 把串口的字符加到buffer中，
  * 可使用 Register_USART1_Callback 注册
  */ 
-unsigned int _USART1_Received_To_Buffer(unsigned char c);
+unsigned int USART1_Received_To_Buffer(unsigned char c);
 
 /**********************************
  * 从buffer读取串口写满或者写完的数据
@@ -36,7 +36,7 @@ unsigned int _USART1_Received_To_Buffer(unsigned char c);
 
 	while(1)
 	{
-		i = _USART1_Read_To_Buffer(buff);
+		i = USART1_Read_To_Buffer(buff);
 		if(i == 0)
 		{
 			return;
@@ -50,7 +50,7 @@ unsigned int _USART1_Received_To_Buffer(unsigned char c);
 
  *
  */
-unsigned int _USART1_Read_To_Buffer(unsigned char * buff);
+unsigned int USART1_Read_To_Buffer(unsigned char * buff);
 
 
 

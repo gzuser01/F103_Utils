@@ -1,6 +1,0 @@
---cpu Cortex-M3 -g --apcs=interwork --pd "__MICROLIB SETA 1"
--IC:\stm32_ws\f103\F103_Utils\USER\RTE\_Utils
--IC:\Keil_v5\ARM\PACK\ARM\CMSIS\5.0.0\CMSIS\Include
--IC:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.1.0\Device\Include
---pd "__UVISION_VERSION SETA 522" --pd "_RTE_ SETA 1" --pd "STM32F10X_MD SETA 1"
---list ..\listing\startup_stm32f10x_hd.lst --xref -o .\startup_stm32f10x_hd.o --depend .\startup_stm32f10x_hd.d "..\CMSIS\startup\startup_stm32f10x_hd.s"

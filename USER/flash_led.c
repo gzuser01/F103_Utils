@@ -93,7 +93,7 @@ void Auto_Off_TIMx_CallBack(void)
 
 /**
  * 闪烁LED配置，注册中断的回调函数
- * 需要通过类似 TIMx_Configuration(TIM4,7199,99,NVIC_PriorityGroup_2,2,0); 初始化一个低优先级的时间中断
+ * 需要通过类似 TIMx_With_NVIC_Config(TIM4,7199,99,NVIC_PriorityGroup_2,2,0); 初始化一个低优先级的时间中断
  */
 void Flash_Led_Config(TIM_TypeDef* TIMx,GPIO_TypeDef *GPIOx,uint16_t GPIO_Pin)
 {

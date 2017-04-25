@@ -50,7 +50,7 @@ void usart1_data_init(void)
  * 把串口的字符加到buffer中，
  * 可使用 Register_USART1_Callback 注册
  */ 
-unsigned int _USART1_Received_To_Buffer(unsigned char c)
+unsigned int USART1_Received_To_Buffer(unsigned char c)
 {
 	return linked_list_data_add_char( &usart1_data, c);
 }
@@ -70,14 +70,14 @@ unsigned int _USART1_Received_To_Buffer(unsigned char c)
 		}
 		for(i = 0;i< usart1_data_node_char_len;i++)
 		{
-			//USART1_Send_Byte(buff[i]); //
+			//Flash_LED_USART1_Send_Byte(buff[i]); //
 		}
 		
 	}
 
  *
  */
-unsigned int _USART1_Read_To_Buffer(unsigned char * buff)
+unsigned int USART1_Read_To_Buffer(unsigned char * buff)
 {
 	return linked_list_data_read( &usart1_data, buff);
 }

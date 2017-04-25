@@ -26,7 +26,7 @@ void GPIO_Config(GPIO_TypeDef *GPIOx,uint16_t GPIO_Pin,GPIOMode_TypeDef GPIO_Mod
 	}
 	
 	
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin;//≥ı ºªØLED0
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed;
   GPIO_Init(GPIOx, &GPIO_InitStructure);
