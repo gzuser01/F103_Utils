@@ -45,13 +45,13 @@ void TIMx_Config(TIM_TypeDef* TIMx,
 	}
     
   TIM_ClearITPendingBit(TIMx, TIM_IT_Update);  
-    
+  
   TIM_TimeBaseStructure.TIM_Period = TIM_Period; //99 即 0.01秒中断
   TIM_TimeBaseStructure.TIM_Prescaler = TIM_Prescaler;//7199
   TIM_TimeBaseStructure.TIM_ClockDivision = 0x0;  
   TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  
   TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure);  
-    
+  
   TIM_ITConfig(TIMx, TIM_IT_Update, ENABLE );  
   TIM_Cmd(TIMx,ENABLE);  
 	
@@ -225,4 +225,32 @@ void TIM5_IRQHandler(void)
 	}
 	
 }
+
+
+
+//us秒级延时
+void Delay_Nus(uint32_t nus)
+{
+	uint32_t c;
+	SysTick->LOAD = nus * 9;
+	SysTick->VAL = 0x00;
+	SysTick->CTRL = 0x01 ;
+	do
+	{
+		c=SysTick->CTRL;
+	}while(c&0x01&&!(c&(1<<16)));
+	SysTick->CTRL = 0x00;
+	SysTick->VAL = 0X00;
+}
+
+//ms秒级延时
+void Delay_Nms(uint32_t nms)
+{
+	uint32_t c;
+	for(c = 0;c< nms;c++)
+	{
+		Delay_Nus(1000);
+	}
+}
+
 

@@ -3,6 +3,8 @@
 
 *********************************************************/
 
+
+
 #include "stm32f10x.h"
 
 
@@ -21,6 +23,7 @@ int main(void)
 {  
 	     
 	SystemInit();	//配置系统时钟为 72M 
+	
   
 	//TIMx_With_NVIC_Config(TIM2,7199,99,NVIC_PriorityGroup_2,0,0);
   //TIMx_With_NVIC_Config(TIM3,7199,99,NVIC_PriorityGroup_2,1,0);  
@@ -32,7 +35,7 @@ int main(void)
 	
 	//GPIO_Config(GPIOC,GPIO_Pin_13,GPIO_Mode_IPD,GPIO_Speed_2MHz);
 	
-	usart1_test();
+	srf05_test();
 
   while (1)
   {	 

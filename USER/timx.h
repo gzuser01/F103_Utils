@@ -28,5 +28,9 @@ void TIM3_IRQHandler(void);
 void TIM4_IRQHandler(void);
 void TIM5_IRQHandler(void);
 
+
+void Delay_Nus(uint32_t nus);
+void Delay_Nms(uint32_t nms);
+
 #endif
 
