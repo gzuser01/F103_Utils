@@ -440,11 +440,6 @@
               <FilePath>.\linked_list_data.c</FilePath>
             </File>
             <File>
-              <FileName>usart1_test.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\usart1_test.h</FilePath>
-            </File>
-            <File>
               <FileName>pwm_led_test.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\pwm_led_test.h</FilePath>
@@ -463,6 +458,26 @@
               <FileName>srf05_test.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\srf05_test.h</FilePath>
+            </File>
+            <File>
+              <FileName>usart1_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usart1_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c_eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\i2c_eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c_eeprom_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\i2c_eeprom_test.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -493,6 +508,11 @@
               <FileName>misc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\FWlib\src\misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\FWlib\src\stm32f10x_i2c.c</FilePath>
             </File>
           </Files>
         </Group>

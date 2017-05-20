@@ -8,11 +8,12 @@
 #include "stm32f10x.h"
 
 
-//#include "gpio.h"
+#include "gpio.h"
 
 //#include "usart1_test.h"
 //#include "pwm_led_test.h"
-#include "srf05_test.h"
+//#include "srf05_test.h"
+#include "i2c_eeprom_test.h"
 
 #include <stdlib.h>
 
@@ -35,7 +36,9 @@ int main(void)
 	
 	//GPIO_Config(GPIOC,GPIO_Pin_13,GPIO_Mode_IPD,GPIO_Speed_2MHz);
 	
-	srf05_test();
+	//srf05_test();
+	
+	i2c_eeprom_test();
 
   while (1)
   {	 

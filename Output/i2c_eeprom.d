@@ -1,0 +1,13 @@
+..\output\i2c_eeprom.o: i2c_eeprom.c
+..\output\i2c_eeprom.o: i2c_eeprom.h
+..\output\i2c_eeprom.o: i2c.h
+..\output\i2c_eeprom.o: ..\CMSIS\stm32f10x.h
+..\output\i2c_eeprom.o: ..\CMSIS\core_cm3.h
+..\output\i2c_eeprom.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+..\output\i2c_eeprom.o: ..\CMSIS\system_stm32f10x.h
+..\output\i2c_eeprom.o: ..\USER\stm32f10x_conf.h
+..\output\i2c_eeprom.o: ..\FWlib\inc\stm32f10x_gpio.h
+..\output\i2c_eeprom.o: ..\CMSIS\stm32f10x.h
+..\output\i2c_eeprom.o: ..\FWlib\inc\stm32f10x_rcc.h
+..\output\i2c_eeprom.o: ..\FWlib\inc\stm32f10x_usart.h
+..\output\i2c_eeprom.o: ..\FWlib\inc\stm32f10x_i2c.h

@@ -22,7 +22,7 @@ unsigned char usart1_data_node_chars[ usart1_data_node_len ][ usart1_data_node_c
  * 初始化
  * 要在 main 函数执行
  */
-void usart1_data_init(void)
+void USART1_Data_Init(void)
 {
 
 	int i;
@@ -46,6 +46,12 @@ void usart1_data_init(void)
 	
 }
 
+void USART1_Received_To_Buffer_Ignore_Error(unsigned char c)
+{
+	linked_list_data_add_char( &usart1_data, c);
+}
+
+
 /**
  * 把串口的字符加到buffer中，
  * 可使用 Register_USART1_Callback 注册
@@ -56,7 +62,7 @@ unsigned int USART1_Received_To_Buffer(unsigned char c)
 }
 
 /**********************************
- * 从buffer读取串口写满或者写完的数据
+ * 从buffer读取串口写满或者写完的数据，读取后从缓存删除
 
 	int i = 0;
 	unsigned char buff[usart1_data_node_char_len];
@@ -66,7 +72,7 @@ unsigned int USART1_Received_To_Buffer(unsigned char c)
 		i = _USART1_Read_To_Buffer(buff);
 		if(i == 0)
 		{
-			return;
+			break;
 		}
 		for(i = 0;i< usart1_data_node_char_len;i++)
 		{

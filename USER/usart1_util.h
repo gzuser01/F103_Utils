@@ -16,8 +16,8 @@ void Flash_LED_USART1_Config(TIM_TypeDef* USART1_TIMx,
 		GPIO_TypeDef *USART1_Rx_GPIOx,uint16_t USART1_Rx_GPIO_Pin,
 		TIM_TypeDef* LED_TIMx,
 		GPIO_TypeDef *USART1_R_LED_GPIOx,uint16_t USART1_R_LED_GPIO_Pin,
-		GPIO_TypeDef *USART1_W_LED_GPIOx,uint16_t USART1_W_LED_GPIO_Pin,
-		unsigned short int debug);
+		GPIO_TypeDef *USART1_W_LED_GPIOx,uint16_t USART1_W_LED_GPIO_Pin
+		);
 
 
 

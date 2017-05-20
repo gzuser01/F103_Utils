@@ -20,7 +20,10 @@
  * 初始化
  * 要在 main 函数执行
  */
-void usart1_data_init(void);
+void USART1_Data_Init(void);
+
+void USART1_Received_To_Buffer_Ignore_Error(unsigned char c);
+
 
 /**
  * 把串口的字符加到buffer中，
