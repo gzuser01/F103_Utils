@@ -479,6 +479,11 @@
               <FileType>5</FileType>
               <FilePath>.\i2c_eeprom_test.h</FilePath>
             </File>
+            <File>
+              <FileName>ds3231_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ds3231_test.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -13,7 +13,8 @@
 //#include "usart1_test.h"
 //#include "pwm_led_test.h"
 //#include "srf05_test.h"
-#include "i2c_eeprom_test.h"
+//#include "i2c_eeprom_test.h"
+#include "ds3231_test.h"
 
 #include <stdlib.h>
 
@@ -38,7 +39,9 @@ int main(void)
 	
 	//srf05_test();
 	
-	i2c_eeprom_test();
+	//i2c_eeprom_test();
+	
+	ds3231_test();
 
   while (1)
   {	 

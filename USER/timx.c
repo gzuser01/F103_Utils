@@ -21,76 +21,74 @@ void (*_m_tim4_irqhandler_ptr[])(void) = {0,0,0,0,0,0,0,0,0,0};
 void (*_m_tim5_irqhandler_ptr[])(void) = {0,0,0,0,0,0,0,0,0,0};
 
 
-void TIMx_Config(TIM_TypeDef* TIMx,
-	uint16_t TIM_Prescaler,
-	uint16_t TIM_Period)    
+void TIMx_Config(TIM_TypeDef* timx,	
+	uint16_t tim_prescaler,
+	uint16_t tim_period)    
 {  
   TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;  
 	
-	if(TIMx == TIM2)
+	if(timx == TIM2)
 	{
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2,ENABLE); 
 	}
-	else if(TIMx == TIM3)
+	else if(timx == TIM3)
 	{
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3,ENABLE); 
 	}
-	else if(TIMx == TIM4)
+	else if(timx == TIM4)
 	{
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM4,ENABLE); 
 	}		
-	else if(TIMx == TIM5)
+	else if(timx == TIM5)
 	{
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5,ENABLE); 
 	}
     
-  TIM_ClearITPendingBit(TIMx, TIM_IT_Update);  
+  TIM_ClearITPendingBit(timx, TIM_IT_Update);  
   
-  TIM_TimeBaseStructure.TIM_Period = TIM_Period; //99 即 0.01秒中断
-  TIM_TimeBaseStructure.TIM_Prescaler = TIM_Prescaler;//7199
+  TIM_TimeBaseStructure.TIM_Period = tim_period; //99 即 0.01秒中断
+  TIM_TimeBaseStructure.TIM_Prescaler = tim_prescaler;//7199
   TIM_TimeBaseStructure.TIM_ClockDivision = 0x0;  
   TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;  
-  TIM_TimeBaseInit(TIMx, &TIM_TimeBaseStructure);  
+  TIM_TimeBaseInit(timx, &TIM_TimeBaseStructure);  
   
-  TIM_ITConfig(TIMx, TIM_IT_Update, ENABLE );  
-  TIM_Cmd(TIMx,ENABLE);  
+  TIM_ITConfig(timx, TIM_IT_Update, ENABLE );  
+  TIM_Cmd(timx,ENABLE);  
 	
 }
 
-void TIMx_With_NVIC_Config(TIM_TypeDef* TIMx,
-	uint16_t TIM_Prescaler,
-	uint16_t TIM_Period,
-	uint32_t NVIC_PriorityGroup,
-	uint8_t NVIC_IRQChannelPreemptionPriority,
-	uint8_t NVIC_IRQChannelSubPriority)    
+void TIMx_With_NVIC_Config(TIM_TypeDef* timx,	
+	uint16_t tim_prescaler,
+	uint16_t tim_period,
+	uint32_t nvic_priority_group,uint8_t nvic_irq_channel_preemption_priority,uint8_t nvic_irq_channel_sub_priority)    
 {  
   
 	NVIC_InitTypeDef NVIC_InitStructure;    
 	
-	TIMx_Config(TIMx,TIM_Prescaler,TIM_Period);
+	TIMx_Config(timx,tim_prescaler,tim_period);
 		
   //配置中断优先级  
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup);    
+  NVIC_PriorityGroupConfig(nvic_priority_group);    
  
-	if(TIMx == TIM2)
+	if(timx == TIM2)
 	{
 		NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn; 
 	}	
-	else if(TIMx == TIM3)
+	else if(timx == TIM3)
 	{
 		NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn; 
 	}
-	else if(TIMx == TIM4)
+	else if(timx == TIM4)
 	{
 		NVIC_InitStructure.NVIC_IRQChannel = TIM4_IRQn; 
 	}		
-	else if(TIMx == TIM5)
+	else if(timx == TIM5)
 	{
 		NVIC_InitStructure.NVIC_IRQChannel = TIM5_IRQn;  
 	}
 	
-  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = NVIC_IRQChannelPreemptionPriority;    
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = NVIC_IRQChannelSubPriority;    
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = nvic_irq_channel_preemption_priority;    
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = nvic_irq_channel_sub_priority;    
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;    
   NVIC_Init(&NVIC_InitStructure);   
 }  
@@ -100,24 +98,24 @@ void TIMx_With_NVIC_Config(TIM_TypeDef* TIMx,
  * 注册中断回调函数
  * 每 0.01秒 即 10 毫秒执行一次，100Hz
  */
-void Register_TIMx_Callback(TIM_TypeDef* TIMx,void (* ptr)())
+void Register_TIMx_Callback(TIM_TypeDef* timx,void (* ptr)())
 {
 	int i;
 	void (**_m_timx_irqhandler_ptr)(void);
 	
-	if(TIMx == TIM2)
+	if(timx == TIM2)
 	{
 		_m_timx_irqhandler_ptr = _m_tim2_irqhandler_ptr; 
 	}
-	else if(TIMx == TIM3)
+	else if(timx == TIM3)
 	{
 		_m_timx_irqhandler_ptr = _m_tim3_irqhandler_ptr; 
 	}
-	else if(TIMx == TIM4)
+	else if(timx == TIM4)
 	{
 		_m_timx_irqhandler_ptr = _m_tim4_irqhandler_ptr; 
 	}		
-	else if(TIMx == TIM5)
+	else if(timx == TIM5)
 	{
 		_m_timx_irqhandler_ptr = _m_tim5_irqhandler_ptr;  
 	}

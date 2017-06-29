@@ -7,21 +7,21 @@
 /**
  * 配置 TIMx 普通定时器，带中断
  */
-void TIMx_Config(TIM_TypeDef* TIMx,	
-	uint16_t TIM_Prescaler,
-	uint16_t TIM_Period);
+void TIMx_Config(TIM_TypeDef* timx,	
+	uint16_t tim_prescaler,
+	uint16_t tim_period);
 
 
 
 /**
  * 配置 TIMx 普通定时器，带中断
  */
-void TIMx_With_NVIC_Config(TIM_TypeDef* TIMx,	
-	uint16_t TIM_Prescaler,
-	uint16_t TIM_Period,
-	uint32_t NVIC_PriorityGroup,uint8_t NVIC_IRQChannelPreemptionPriority,uint8_t NVIC_IRQChannelSubPriority);
+void TIMx_With_NVIC_Config(TIM_TypeDef* timx,	
+	uint16_t tim_prescaler,
+	uint16_t tim_period,
+	uint32_t nvic_priority_group,uint8_t nvic_irq_channel_preemption_priority,uint8_t nvic_irq_channel_sub_priority);
 
-void Register_TIMx_Callback(TIM_TypeDef* TIMx,void (* ptr)());  
+void Register_TIMx_Callback(TIM_TypeDef* timx,void (* ptr)());  
 
 void TIM2_IRQHandler(void);
 void TIM3_IRQHandler(void);

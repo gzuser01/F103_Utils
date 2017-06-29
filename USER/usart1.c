@@ -19,17 +19,18 @@ void (*_m_usart1_irqhandler_ptr[])(unsigned char) = {0,0,0,0,0,0,0,0,0,0};
 
 
 
-void USART1_Config(GPIO_TypeDef *Tx_GPIOx,uint16_t Tx_GPIO_Pin,GPIO_TypeDef *Rx_GPIOx,uint16_t Rx_GPIO_Pin)
+void USART1_Config(GPIO_TypeDef *tx_gpiox,uint16_t tx_gpio_pin,GPIO_TypeDef *rx_gpiox,uint16_t rx_gpio_pin)
 {
 
 	USART_InitTypeDef USART_InitStructure;
 	NVIC_InitTypeDef NVIC_InitStructure;
 	
 	/* 使能 USART1 中断 */
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_0);//选择分组方式0，最高
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);//选择分组方式2
   
   NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;//最高
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1; 
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
 	
@@ -38,8 +39,8 @@ void USART1_Config(GPIO_TypeDef *Tx_GPIOx,uint16_t Tx_GPIO_Pin,GPIO_TypeDef *Rx_
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE); 
 	
 	/* USART1 使用IO端口配置 */    
-	GPIO_Config(Tx_GPIOx,Tx_GPIO_Pin,GPIO_Mode_AF_PP,GPIO_Speed_50MHz);//Tx 复用推挽输出
-	GPIO_Config(Rx_GPIOx,Rx_GPIO_Pin,GPIO_Mode_IN_FLOATING,GPIO_Speed_50MHz);//Rx 浮空输入
+	GPIO_Config(tx_gpiox,tx_gpio_pin,GPIO_Mode_AF_PP,GPIO_Speed_50MHz);//Tx 复用推挽输出
+	GPIO_Config(rx_gpiox,rx_gpio_pin,GPIO_Mode_IN_FLOATING,GPIO_Speed_50MHz);//Rx 浮空输入
 	
 	  
 	/* USART1 工作模式配置 */
@@ -61,14 +62,14 @@ void USART1_Config(GPIO_TypeDef *Tx_GPIOx,uint16_t Tx_GPIO_Pin,GPIO_TypeDef *Rx_
 }
 
  /*发送一个字节数据*/
-void USART1_Send_Byte(unsigned char SendData)
+void USART1_Send_Byte(unsigned char send_data)
 {	   
-	USART_SendData(USART1,SendData);
+	USART_SendData(USART1,send_data);
 	while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);	    
 }  
 
 /*接收一个字节数据*/
-unsigned char USART1_Get_Byte(unsigned char* GetData)
+unsigned char USART1_Get_Byte(unsigned char* get_data)
 {   	   
 	if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET)
 	{  
@@ -76,7 +77,7 @@ unsigned char USART1_Get_Byte(unsigned char* GetData)
 		return 0;//没有收到数据 
 	}
 	
-	*GetData = USART_ReceiveData(USART1); 
+	*get_data = USART_ReceiveData(USART1); 
 	
 	return 1;//收到数据
 }

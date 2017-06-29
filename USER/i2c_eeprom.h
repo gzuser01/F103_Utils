@@ -6,10 +6,10 @@
 #include "i2c.h"
 
 
-uint8_t I2Cx_EE_ReadByte(struct I2Cx_Conf *I2Cx_Conf,u8 Chip_Address, u16 EE_Address);
+int8_t I2Cx_EE_ReadByte(struct I2Cx_Conf *i2cx_conf,uint8_t chip_address, uint16_t ee_address,uint8_t* data);
 
-void I2Cx_EE_WriteByte(struct I2Cx_Conf *I2Cx_Conf,u8 Chip_Address, u16 EE_Address, uint8_t data);
+int8_t I2Cx_EE_WriteByte(struct I2Cx_Conf *i2cx_conf,uint8_t chip_address, uint16_t ee_address, uint8_t data);
 
-
+int8_t I2Cx_EE_Error_Code(void);
 
 #endif 

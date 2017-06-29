@@ -9,8 +9,7 @@
 ..\output\main.o: ..\FWlib\inc\stm32f10x_rcc.h
 ..\output\main.o: ..\FWlib\inc\stm32f10x_usart.h
 ..\output\main.o: gpio.h
-..\output\main.o: i2c_eeprom_test.h
-..\output\main.o: i2c_eeprom.h
+..\output\main.o: ds3231_test.h
 ..\output\main.o: i2c.h
 ..\output\main.o: ..\FWlib\inc\stm32f10x_i2c.h
 ..\output\main.o: usart1_util.h

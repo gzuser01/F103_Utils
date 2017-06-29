@@ -10,11 +10,3 @@
 ..\output\i2c.o: ..\FWlib\inc\stm32f10x_rcc.h
 ..\output\i2c.o: ..\FWlib\inc\stm32f10x_usart.h
 ..\output\i2c.o: ..\FWlib\inc\stm32f10x_i2c.h
-..\output\i2c.o: usart1_util.h
-..\output\i2c.o: usart1.h
-..\output\i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-..\output\i2c.o: usart1_data.h
-..\output\i2c.o: linked_list.h
-..\output\i2c.o: linked_list_data.h
-..\output\i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
-..\output\i2c.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
