@@ -4,11 +4,11 @@
 #include "stm32f10x.h"
 #include <stdio.h>
 
-void USART1_Config(GPIO_TypeDef *tx_gpiox,uint16_t tx_gpio_pin,GPIO_TypeDef *rx_gpiox,uint16_t rx_gpio_pin);
+void USART1_Config(GPIO_TypeDef *Tx_GPIOx,uint16_t Tx_GPIO_Pin,GPIO_TypeDef *Rx_GPIOx,uint16_t Rx_GPIO_Pin);
 
-void USART1_Send_Byte(unsigned char send_data);
+void USART1_Send_Byte(unsigned char Send_Data);
 
-unsigned char USART1_Get_Byte(unsigned char* get_data);
+unsigned char USART1_Get_Byte(unsigned char* Get_Data);
 
 void Register_USART1_Callback(void (* ptr)(unsigned char));
 

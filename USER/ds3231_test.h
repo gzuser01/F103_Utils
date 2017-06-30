@@ -5,21 +5,36 @@
 #include "usart1_util.h"
 #include "timx.h"
 
+//T(sec)(min)(hour)(dayOfWeek)(dayOfMonth)(month)(year)
+//T(00-59)(00-59)(00-23)(1-7)(01-31)(01-12)(00-99)
 
+uint8_t _m_DS3231_Chip_Address = 0xD0;
+uint8_t _m_DS3231_Sub_Address = 0x00;
 
-uint8_t ds3231_read_chip_address = 0xD0;
-uint8_t ds3231_write_chip_address = 0xD0;
+int8_t _m_DS3231_I2C_Error_Code;
 
-int8_t i2cx_ds3231_error_code;
+struct I2Cx_Conf DS3231_I2C1_Conf;
 
-struct I2Cx_Conf ds3231_i2c1_conf;
+u8 bcd_to_dec(u8 bcdByte) {
+  return (((bcdByte & 0xF0) >> 4) * 10) + (bcdByte & 0x0F);
+}
+
+u8 dec_to_bcd(u8 decByte) {
+  return (((decByte / 10) << 4) | (decByte % 10));
+}
+
+uint16_t dayOfWeek(uint16_t year, uint16_t month, uint16_t day) {
+  static int t[] = {0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
+  year -= month < 3;
+  return ((year + year/4 - year/100 + year/400 + t[month-1] + day) % 7); 
+}
 
 
 uint8_t DS3231_Init(uint8_t chip_address)
 {
 	uint16_t i;
 	
-	i2cx_ds3231_error_code = 0x00;
+	_m_DS3231_I2C_Error_Code = 0x00;
 	
 	while (I2C_GetFlagStatus(I2C1,I2C_FLAG_BUSY)); // Wait until I2C free
 	
@@ -28,7 +43,7 @@ uint8_t DS3231_Init(uint8_t chip_address)
 	{
 		if(i> TRY_TIMES)
 		{
-			i2cx_ds3231_error_code = 0xA0;
+			_m_DS3231_I2C_Error_Code = 0xA0;
 			return 0;
 		}
 	}
@@ -38,7 +53,7 @@ uint8_t DS3231_Init(uint8_t chip_address)
 	{
 		if(i> TRY_TIMES)
 		{
-			i2cx_ds3231_error_code = 0xA1;
+			_m_DS3231_I2C_Error_Code = 0xA1;
 			return 0;
 		}
 	}
@@ -48,7 +63,7 @@ uint8_t DS3231_Init(uint8_t chip_address)
 	{
 		if(i> TRY_TIMES)
 		{
-			i2cx_ds3231_error_code = 0xA2;
+			_m_DS3231_I2C_Error_Code = 0xA2;
 			return 0;
 		}
 	}
@@ -58,7 +73,7 @@ uint8_t DS3231_Init(uint8_t chip_address)
 	{
 		if(i> TRY_TIMES)
 		{
-			i2cx_ds3231_error_code = 0xA3;
+			_m_DS3231_I2C_Error_Code = 0xA3;
 			return 0;
 		}
 	}
@@ -69,7 +84,7 @@ uint8_t DS3231_Init(uint8_t chip_address)
 	{
 		if(i> TRY_TIMES)
 		{
-			i2cx_ds3231_error_code = 0xA4;
+			_m_DS3231_I2C_Error_Code = 0xA4;
 			return 0;
 		}
 	}
@@ -81,57 +96,56 @@ uint8_t DS3231_Init(uint8_t chip_address)
 
 
 
-uint8_t DS3231_ReadByte(struct I2Cx_Conf *i2cx_conf,uint8_t chip_address, uint8_t sub_address,uint8_t* data)
+uint8_t DS3231_Read(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t chip_address, uint8_t sub_address,uint8_t* data)
 {
-	i2cx_ds3231_error_code = 0x00;
+	_m_DS3231_I2C_Error_Code = 0x00;
 	
-	I2C1_Conf_Init(&ds3231_i2c1_conf);
+	I2C1_Conf_Init(&DS3231_I2C1_Conf);
 
-	I2Cx_Ack_Enable(i2cx_conf);
+	I2Cx_Ack_Enable(I2Cx_Conf_Struct);
 	
-	if(!I2Cx_Wait(i2cx_conf))
+	if(!I2Cx_Wait(I2Cx_Conf_Struct))
 	{
-		i2cx_ds3231_error_code = 0x01;
+		_m_DS3231_I2C_Error_Code = 0x01;
 		//return 0;
 	}
-	if(!I2Cx_Start(i2cx_conf))
+	if(!I2Cx_Start(I2Cx_Conf_Struct))
 	{
-		i2cx_ds3231_error_code = 0x02;
+		_m_DS3231_I2C_Error_Code = 0x02;
 		//return 0;
 	}
-	if(!I2Cx_Address_Direction(i2cx_conf,chip_address, I2C_Direction_Transmitter))
+	if(!I2Cx_Address_Direction(I2Cx_Conf_Struct,chip_address, I2C_Direction_Transmitter))
 	{
-		i2cx_ds3231_error_code = 0x03;
+		_m_DS3231_I2C_Error_Code = 0x03;
 		return 0;
 	}
 	
-	if(!I2Cx_Transmit(i2cx_conf, sub_address))
+	if(!I2Cx_Transmit(I2Cx_Conf_Struct, sub_address))
 	{
-		i2cx_ds3231_error_code = 0x04;
+		_m_DS3231_I2C_Error_Code = 0x04;
 		return 0;
 	}
-	if(!I2Cx_Start(i2cx_conf))
+	if(!I2Cx_Start(I2Cx_Conf_Struct))
 	{
-		i2cx_ds3231_error_code = 0x05;
+		_m_DS3231_I2C_Error_Code = 0x05;
 		return 0;
 	}
-	if(!I2Cx_Address_Direction(i2cx_conf,chip_address, I2C_Direction_Receiver))
+	if(!I2Cx_Address_Direction(I2Cx_Conf_Struct,chip_address, I2C_Direction_Receiver))
 	{
-		i2cx_ds3231_error_code = 0x06;
+		_m_DS3231_I2C_Error_Code = 0x06;
 		return 0;
 	}
-	if(!I2Cx_Receives(i2cx_conf,data,7))
+	if(!I2Cx_Receives(I2Cx_Conf_Struct,data,7))
 	{
-		i2cx_ds3231_error_code = 0x07;
+		_m_DS3231_I2C_Error_Code = 0x07;
 		return 0;
 	}
-
 	
-	I2Cx_Ack_Disable(i2cx_conf);
+	I2Cx_Ack_Disable(I2Cx_Conf_Struct);
 		
-	if(!I2Cx_Stop(i2cx_conf))
+	if(!I2Cx_Stop(I2Cx_Conf_Struct))
 	{
-		i2cx_ds3231_error_code = 0x09;
+		_m_DS3231_I2C_Error_Code = 0x09;
 		return 0;
 	}
 
@@ -140,58 +154,83 @@ uint8_t DS3231_ReadByte(struct I2Cx_Conf *i2cx_conf,uint8_t chip_address, uint8_
 }
 
 
-uint8_t DS3231_WriteByte(struct I2Cx_Conf *i2cx_conf,uint8_t chip_address, uint8_t sub_address, uint8_t data)
+uint8_t DS3231_Write(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t chip_address, uint8_t sub_address, uint8_t *data)
 {
-	i2cx_ds3231_error_code = 0x00;
-	if(!I2Cx_Wait(i2cx_conf))
+	uint8_t i;
+	
+	_m_DS3231_I2C_Error_Code = 0x00;
+	
+	I2C1_Conf_Init(&DS3231_I2C1_Conf);
+
+	I2Cx_Ack_Enable(I2Cx_Conf_Struct);
+	
+	if(!I2Cx_Wait(I2Cx_Conf_Struct))
 	{
-		i2cx_ds3231_error_code = 0x11;
+		_m_DS3231_I2C_Error_Code = 0x11;
 		return 0;
 	}
-	if(!I2Cx_Start(i2cx_conf))
+	if(!I2Cx_Start(I2Cx_Conf_Struct))
 	{
-		i2cx_ds3231_error_code = 0x12;
+		_m_DS3231_I2C_Error_Code = 0x12;
 		return 0;
 	}
-	if(!I2Cx_Address_Direction(i2cx_conf,chip_address, I2C_Direction_Transmitter))
+	
+	if(!I2Cx_Address_Direction(I2Cx_Conf_Struct,chip_address, I2C_Direction_Transmitter))
 	{
-		i2cx_ds3231_error_code = 0x13;
+		_m_DS3231_I2C_Error_Code = 0x13;
 		return 0;
 	}
-	if(!I2Cx_Transmit(i2cx_conf, sub_address))
+	
+	if(!I2Cx_Transmit(I2Cx_Conf_Struct, sub_address))
 	{
-		i2cx_ds3231_error_code = 0x14;
+		_m_DS3231_I2C_Error_Code = 0x14;
 		return 0;
 	}
-	if(!I2Cx_Transmit(i2cx_conf, data))
+	
+	for (i = 0; i < 7; i++) 
 	{
-		i2cx_ds3231_error_code = 0x15;
-		return 0;
+		if(!I2Cx_Transmit(I2Cx_Conf_Struct, data[i]))
+		{
+			_m_DS3231_I2C_Error_Code = 0x15;
+			return 0;
+		}
 	}
-	if(!I2Cx_Stop(i2cx_conf))
+	
+	I2Cx_Ack_Disable(I2Cx_Conf_Struct);
+	
+	if(!I2Cx_Stop(I2Cx_Conf_Struct))
 	{
-		i2cx_ds3231_error_code = 0x16;
+		_m_DS3231_I2C_Error_Code = 0x16;
 		return 0;
 	}
 	return 1;
 }
 
 
-int8_t I2Cx_DS3231_Error_Code(void)
+int8_t DS3231_I2C_Error_Code(void)
 {
-	return i2cx_ds3231_error_code;
+	return _m_DS3231_I2C_Error_Code;
 }
 
 
-
+/**
+ * 发送 01 或 02 则返回时间，01 是 bcd ，02 是 dec，默认 dec
+ * 发送 03 或 04 开头设置时间，格式 02 秒 分 时 dow 日 月 年，dow自动计算填入 00 即可，03 是 bcd ，04 是 dec
+ * 设置成功返回时间
+ * 查询或者设置失败返回 FF FF 错误码
+ */
 
 void DS3231_USART1_Recieve_Processor(void)
 {
 	int i = 0;
 	int j = 0;
-	uint8_t ds3231_address;
+	
+	int16_t year = 0;
+	int16_t month = 0;
+	int16_t day = 0;
+
 	uint8_t data[7] = {0,0,0,0,0,0,0};
-	unsigned char buff[usart1_data_node_char_len];
+	unsigned char buff[USART1_Data_Node_Char_Len];
 	
 	while(1)
 	{
@@ -202,43 +241,56 @@ void DS3231_USART1_Recieve_Processor(void)
 		{
 			break;
 		}
-		
-		if(buff[0] == 0x01)
+
+
+		if(buff[0] == 0x03 || buff[0] == 0x04)
 		{
-			ds3231_address = buff[1];
-			if(DS3231_ReadByte(&ds3231_i2c1_conf,ds3231_read_chip_address,ds3231_address,data))
+			memcpy(data,buff + 1,7);
+			
+			if(buff[0] == 0x04)
 			{
 				for(j=0;j<7;j++)
 				{
-					USART1_Send_Byte(data[j]);
+					data[j] = dec_to_bcd(data[j]);
 				}
 			}
-			if(I2Cx_DS3231_Error_Code() != 0x00)
-			{
-				USART1_Send_Byte(0xFF);
-				USART1_Send_Byte(0xFF);
-				USART1_Send_Byte(I2Cx_DS3231_Error_Code());
-			}
-		}
-		else if(buff[0] == 0x02)
-		{
-			ds3231_address = buff[1];
-			if(DS3231_WriteByte(&ds3231_i2c1_conf,ds3231_write_chip_address,ds3231_address,buff[2]))
-			{
-				USART1_Send_Byte(0x00);
-			}
-			if(I2Cx_DS3231_Error_Code() != 0x00)
-			{
-				USART1_Send_Byte(0xFF);
-				USART1_Send_Byte(0xFF);
-				USART1_Send_Byte(I2Cx_DS3231_Error_Code());
-			}
-		}
-		else
-		{
-			USART1_Send_Byte(0xFF);
+			
+			year = 2000 + bcd_to_dec(data[6]);
+			month = bcd_to_dec(data[5]);
+			day = bcd_to_dec(data[4]);
+			
+			data[3] = dayOfWeek(year,month,day);
+			
+			DS3231_Write(&DS3231_I2C1_Conf,_m_DS3231_Chip_Address,_m_DS3231_Sub_Address,data);
 		}
 		
+
+		if(DS3231_Read(&DS3231_I2C1_Conf,_m_DS3231_Chip_Address,_m_DS3231_Sub_Address,data))
+		{
+			for(j=0;j<7;j++)
+			{
+				if(buff[0] != 0x01 && buff[0] != 0x03)
+				{
+					data[j] = bcd_to_dec(data[j]);
+				}
+				USART1_Send_Byte(data[j]);					
+			}
+			
+				
+			if(buff[0] != 0x01 && buff[0] != 0x03)
+			{
+				USART1_Send_Byte('\n');
+			}
+		}
+		
+		
+		if(DS3231_I2C_Error_Code() != 0x00)
+		{
+			USART1_Send_Byte(0xFF);
+			USART1_Send_Byte(0xFF);
+			USART1_Send_Byte(DS3231_I2C_Error_Code());
+		}
+
 	}
 	
 	
@@ -248,32 +300,32 @@ void DS3231_USART1_Recieve_Processor(void)
 void ds3231_test(void)
 {
 	
-	TIM_TypeDef* usart1_callback_timx = TIM3;
+	TIM_TypeDef* USART1_Callback_TIMx = TIM3;
 	
-	GPIO_TypeDef *usart1_tx_gpiox = GPIOA;
-	uint16_t usart1_tx_gpio_pin = GPIO_Pin_9;
+	GPIO_TypeDef *USART1_Tx_GPIOx = GPIOA;
+	uint16_t USART1_Tx_GPIO_Pin = GPIO_Pin_9;
 
-	GPIO_TypeDef *usart1_rx_gpiox = GPIOA;
-	uint16_t usart1_rx_gpio_pin = GPIO_Pin_10;
+	GPIO_TypeDef *USART1_Rx_GPIOx = GPIOA;
+	uint16_t USART1_Rx_GPIO_Pin = GPIO_Pin_10;
 	
-	TIMx_With_NVIC_Config(usart1_callback_timx,7199,99,NVIC_PriorityGroup_0,0,0); 
+	TIMx_With_NVIC_Config(USART1_Callback_TIMx,7199,99,NVIC_PriorityGroup_0,0,0); 
 	
-	USART1_Config(usart1_tx_gpiox,usart1_tx_gpio_pin,usart1_rx_gpiox,usart1_rx_gpio_pin); //USART1 配置 
+	USART1_Config(USART1_Tx_GPIOx,USART1_Tx_GPIO_Pin,USART1_Rx_GPIOx,USART1_Rx_GPIO_Pin); //USART1 配置 
 	
-	I2C1_Conf_Init(&ds3231_i2c1_conf);
+	I2C1_Conf_Init(&DS3231_I2C1_Conf);
 	
 	Register_USART1_Callback(USART1_Received_To_Buffer_Ignore_Error);
 	
-	Register_TIMx_Callback(usart1_callback_timx,DS3231_USART1_Recieve_Processor);
+	Register_TIMx_Callback(USART1_Callback_TIMx,DS3231_USART1_Recieve_Processor);
 	
 	USART1_Data_Init();
 	
-	DS3231_Init(ds3231_read_chip_address);
-	if(I2Cx_DS3231_Error_Code() != 0x00)
+	DS3231_Init(_m_DS3231_Chip_Address);
+	if(DS3231_I2C_Error_Code() != 0x00)
 	{
 		USART1_Send_Byte(0xFF);
 		USART1_Send_Byte(0xFF);
-		USART1_Send_Byte(I2Cx_DS3231_Error_Code());
+		USART1_Send_Byte(DS3231_I2C_Error_Code());
 	}
 	else
 	{

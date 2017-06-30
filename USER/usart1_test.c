@@ -2,7 +2,7 @@
 #include "usart1_test.h"
 #include "usart1_util.h"
 
-unsigned long _m_usart1_received_count = 0;
+unsigned long _m_USART1_Received_Count = 0;
 
 void USART1_Resend_On_Error(unsigned char c)
 {
@@ -28,7 +28,7 @@ void USART1_Send_Buffer_Data(void)
 	
 	int i = 0;
 
-	unsigned char buff[usart1_data_node_char_len];
+	unsigned char buff[USART1_Data_Node_Char_Len];
 	
 	
 	while(1)
@@ -41,7 +41,7 @@ void USART1_Send_Buffer_Data(void)
 		}
 		
 
-		for(i = 0;i< usart1_data_node_char_len;i++)
+		for(i = 0;i< USART1_Data_Node_Char_Len;i++)
 		{
 			Flash_LED_USART1_Send_Byte(buff[i]);
 		}
@@ -57,10 +57,10 @@ void USART1_Send_Buffer_Data(void)
 void USART1_Received_Count(unsigned char c)
 {
 
-	_m_usart1_received_count ++;
-	if(_m_usart1_received_count == 0xFFFEUL)
+	_m_USART1_Received_Count ++;
+	if(_m_USART1_Received_Count == 0xFFFEUL)
 	{
-		_m_usart1_received_count = 0;
+		_m_USART1_Received_Count = 0;
 	}
 	 
 }

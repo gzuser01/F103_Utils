@@ -9,22 +9,22 @@
  * 把节点加到链表最后一个
  * 如果 head 为空,那么会设置新节点为头节点,因此需要设置指针的指针
  */
-void linked_add_last(struct Linked_List_Node **head,struct Linked_List_Node **new_node,struct Linked_List_Node **var_node)
+void Linked_Add_Last(struct Linked_List_Node **Head,struct Linked_List_Node **New_Node,struct Linked_List_Node **Var_Node)
 {
 
-	*var_node = NULL;
+	*Var_Node = NULL;
 
 
 	//On first add node, head is NULL
-	if(*head == NULL){
-		*head = *new_node;
+	if(*Head == NULL){
+		*Head = *New_Node;
 	}else{
-		*var_node = *head;
-		while((*var_node)->next != NULL)
+		*Var_Node = *Head;
+		while((*Var_Node)->Next != NULL)
 		{
-			*var_node = (*var_node)->next;
+			*Var_Node = (*Var_Node)->Next;
 		}
-		(*var_node)->next = *new_node;
+		(*Var_Node)->Next = *New_Node;
 	}
 	
 
@@ -35,40 +35,40 @@ void linked_add_last(struct Linked_List_Node **head,struct Linked_List_Node **ne
 /**
  * 删除链表第一个
  */
-void linked_remove_first(struct Linked_List_Node **head,struct Linked_List_Node **var_node)
+void Linked_Remove_First(struct Linked_List_Node **Head,struct Linked_List_Node **Var_Node)
 {
 	
-	if(head == NULL || (*head) == NULL)
+	if(Head == NULL || (*Head) == NULL)
 	{
 		return;
 	}
 	
-	if((*head)->next == NULL)
+	if((*Head)->Next == NULL)
 	{
-		*head = NULL;
+		*Head = NULL;
 		return;
 	}
-	*var_node = (*head)->next;
-	(*head)->next = NULL;
-	*head = *var_node;
+	*Var_Node = (*Head)->Next;
+	(*Head)->Next = NULL;
+	*Head = *Var_Node;
 }
 
 /**
  * 链表大小
  */
-unsigned int linked_size(struct Linked_List_Node *head,struct Linked_List_Node *var_node)
+unsigned int Linked_Size(struct Linked_List_Node *Head,struct Linked_List_Node *Var_Node)
 {
 	unsigned int i;
-	if(head == NULL)
+	if(Head == NULL)
 	{
 		return 0;
 	}
 	
 	i = 1;
-	var_node = head;
-	while(var_node->next != NULL)
+	Var_Node = Head;
+	while(Var_Node->Next != NULL)
 	{
-		var_node = (var_node)->next;
+		Var_Node = (Var_Node)->Next;
 		i++;
 	}
 	

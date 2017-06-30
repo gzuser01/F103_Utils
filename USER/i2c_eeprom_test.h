@@ -8,20 +8,20 @@
 
 
 
-uint8_t eeprom_read_chip_address = 0xA1;
-uint8_t eeprom_write_chip_address = 0xA0;
+uint8_t _m_Read_EE_Chip_Address = 0xA1;
+uint8_t _m_Write_EE_Chip_Address = 0xA0;
 
 
 
-struct I2Cx_Conf ee_i2c1_conf;
+struct I2Cx_Conf EE_I2C1_Conf;
 
 
 void EE_USART1_Recieve_Processor(void)
 {
 	int i = 0;
-	uint16_t EE_Address;
+	uint16_t sub_address;
 	uint8_t date;
-	unsigned char buff[usart1_data_node_char_len];
+	unsigned char buff[USART1_Data_Node_Char_Len];
 	
 	while(1)
 	{
@@ -36,8 +36,8 @@ void EE_USART1_Recieve_Processor(void)
 		
 		if(buff[0] == 0x01)
 		{
-			EE_Address = buff[1] * 256 + buff[2];
-			if(I2Cx_EE_ReadByte(&ee_i2c1_conf,eeprom_read_chip_address,EE_Address,&date))
+			sub_address = buff[1] * 256 + buff[2];
+			if(I2Cx_EE_ReadByte(&EE_I2C1_Conf,_m_Read_EE_Chip_Address,sub_address,&date))
 			{
 				USART1_Send_Byte(date);
 			}
@@ -50,8 +50,8 @@ void EE_USART1_Recieve_Processor(void)
 		}
 		else if(buff[0] == 0x02)
 		{
-			EE_Address = buff[1] * 256 + buff[2];	
-			if(I2Cx_EE_WriteByte(&ee_i2c1_conf,eeprom_write_chip_address,EE_Address,buff[3]))
+			sub_address = buff[1] * 256 + buff[2];	
+			if(I2Cx_EE_WriteByte(&EE_I2C1_Conf,_m_Write_EE_Chip_Address,sub_address,buff[3]))
 			{
 				USART1_Send_Byte(0x00);
 			}
@@ -64,12 +64,12 @@ void EE_USART1_Recieve_Processor(void)
 		}
 		else if(buff[0] == 0xA0)
 		{
-			eeprom_read_chip_address = buff[1];	
+			_m_Read_EE_Chip_Address = buff[1];	
 			USART1_Send_Byte(0x00);
 		}
 		else if(buff[0] == 0xA1)
 		{
-			eeprom_write_chip_address = buff[1];	
+			_m_Write_EE_Chip_Address = buff[1];	
 			USART1_Send_Byte(0x00);
 		}
 		else
@@ -87,23 +87,23 @@ void EE_USART1_Recieve_Processor(void)
 void i2c_eeprom_test(void)
 {
 	
-	TIM_TypeDef* usart1_callback_timx = TIM3;
+	TIM_TypeDef* USART1_Callback_TIMx = TIM3;
 	
-	GPIO_TypeDef *usart1_tx_gpiox = GPIOA;
-	uint16_t usart1_tx_gpio_pin = GPIO_Pin_9;
+	GPIO_TypeDef *USART1_Tx_GPIOx = GPIOA;
+	uint16_t USART1_Tx_GPIO_Pin = GPIO_Pin_9;
 
-	GPIO_TypeDef *usart1_rx_gpiox = GPIOA;
-	uint16_t usart1_rx_gpio_pin = GPIO_Pin_10;
+	GPIO_TypeDef *USART1_Rx_GPIOx = GPIOA;
+	uint16_t USART1_Rx_GPIO_Pin = GPIO_Pin_10;
 	
-	TIMx_With_NVIC_Config(usart1_callback_timx,7199,99,NVIC_PriorityGroup_2,1,1); 
+	TIMx_With_NVIC_Config(USART1_Callback_TIMx,7199,99,NVIC_PriorityGroup_2,1,1); 
 	
-	USART1_Config(usart1_tx_gpiox,usart1_tx_gpio_pin,usart1_rx_gpiox,usart1_rx_gpio_pin); //USART1 ≈‰÷√ 
+	USART1_Config(USART1_Tx_GPIOx,USART1_Tx_GPIO_Pin,USART1_Rx_GPIOx,USART1_Rx_GPIO_Pin); //USART1 ≈‰÷√ 
 	
-	I2C1_Conf_Init(&ee_i2c1_conf);
+	I2C1_Conf_Init(&EE_I2C1_Conf);
 	
 	Register_USART1_Callback(USART1_Received_To_Buffer_Ignore_Error);
 	
-	Register_TIMx_Callback(usart1_callback_timx,EE_USART1_Recieve_Processor);
+	Register_TIMx_Callback(USART1_Callback_TIMx,EE_USART1_Recieve_Processor);
 	
 	USART1_Data_Init();
 	

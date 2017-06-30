@@ -9,12 +9,12 @@
 /**
  * 链表中缓存节点的个数
  */
-#define usart1_data_node_len 16
+#define USART1_Data_Node_Len 16
 
 /**
  * 一个节点里面字节长度
  */
-#define usart1_data_node_char_len 8
+#define USART1_Data_Node_Char_Len 16
 
 /**
  * 初始化

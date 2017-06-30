@@ -5,8 +5,8 @@
 
 struct Linked_List_Node
 {
-	unsigned char *c;
-	struct Linked_List_Node *next;
+	unsigned char *C;
+	struct Linked_List_Node *Next;
 	
 };
 
@@ -16,18 +16,18 @@ struct Linked_List_Node
  * 把节点加到链表最后一个
  * 如果 head 为空,那么会设置新节点为头节点,因此需要设置指针的指针
  */
-void linked_add_last(struct Linked_List_Node **head,struct Linked_List_Node **new_node,struct Linked_List_Node **var_node);
+void Linked_Add_Last(struct Linked_List_Node **Head,struct Linked_List_Node **New_Node,struct Linked_List_Node **Var_Node);
 
 
 /**
  * 删除链表第一个
  */
-void linked_remove_first(struct Linked_List_Node **head,struct Linked_List_Node **var_node);
+void Linked_Remove_First(struct Linked_List_Node **Head,struct Linked_List_Node **Var_Node);
 
 /**
  * 链表大小
  */
-unsigned int linked_size(struct Linked_List_Node *head,struct Linked_List_Node *var_node);
+unsigned int Linked_Size(struct Linked_List_Node *Head,struct Linked_List_Node *Var_Node);
 
 
 

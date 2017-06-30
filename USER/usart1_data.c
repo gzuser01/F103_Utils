@@ -6,16 +6,16 @@
  * 缓冲结束标记，可以让指针为 null
  * 如果使用结束标记，发送命令前，只发送一个或多个结束标记有助于先清除缓存
  */
-unsigned char usart1_data_eof[] = {0xEF,0xFF};
+unsigned char _m_USART1_Data_Eof[] = {0xEF,0xFF};
 
 /**
  * 串口缓存数据
  */
-struct Linked_List_Data usart1_data;
+struct Linked_List_Data USART1_Data;
 
-struct Linked_List_Node usart1_data_nodes[ usart1_data_node_len ];
+struct Linked_List_Node USART1_Data_Nodes[ USART1_Data_Node_Len ];
 
-unsigned char usart1_data_node_chars[ usart1_data_node_len ][ usart1_data_node_char_len ];
+unsigned char _m_USART1_Data_Node_Chars[ USART1_Data_Node_Len ][ USART1_Data_Node_Char_Len ];
 
 
 /**
@@ -28,27 +28,27 @@ void USART1_Data_Init(void)
 	int i;
 	struct Linked_List_Node *node;
 	
-	usart1_data.read_lock = 0;
-	usart1_data.write_lock = 0;
-	usart1_data.lock_buffer_length = 0;
-	usart1_data.char_length = usart1_data_node_char_len;
-	usart1_data.eof = usart1_data_eof;
-	usart1_data.eof_length =  (sizeof(usart1_data_eof) / sizeof(usart1_data_eof[0]));
+	USART1_Data.Read_Lock = 0;
+	USART1_Data.Write_Lock = 0;
+	USART1_Data.Lock_Buff_Len = 0;
+	USART1_Data.Char_Len = USART1_Data_Node_Char_Len;
+	USART1_Data.Eof = _m_USART1_Data_Eof;
+	USART1_Data.Eof_Len =  (sizeof(_m_USART1_Data_Eof) / sizeof(_m_USART1_Data_Eof[0]));
 	//usart1_data.eof = NULL;
 	
-	for(i = 0;i<usart1_data_node_len;i++)
+	for(i = 0;i < USART1_Data_Node_Len;i++)
 	{
-		usart1_data_nodes[i].c = usart1_data_node_chars[ i ];
+		USART1_Data_Nodes[i].C = _m_USART1_Data_Node_Chars[ i ];
 		
-		node = &usart1_data_nodes[i];
-		linked_add_last( &(usart1_data.free_list) , &node ,&(usart1_data.var_node));
+		node = &USART1_Data_Nodes[i];
+		Linked_Add_Last( &(USART1_Data.Free_List) , &node ,&(USART1_Data.Var_Node));
 	}
 	
 }
 
 void USART1_Received_To_Buffer_Ignore_Error(unsigned char c)
 {
-	linked_list_data_add_char( &usart1_data, c);
+	Linked_List_Data_Add_Char( &USART1_Data, c);
 }
 
 
@@ -58,7 +58,7 @@ void USART1_Received_To_Buffer_Ignore_Error(unsigned char c)
  */ 
 unsigned int USART1_Received_To_Buffer(unsigned char c)
 {
-	return linked_list_data_add_char( &usart1_data, c);
+	return Linked_List_Data_Add_Char( &USART1_Data, c);
 }
 
 /**********************************
@@ -85,7 +85,7 @@ unsigned int USART1_Received_To_Buffer(unsigned char c)
  */
 unsigned int USART1_Read_To_Buffer(unsigned char * buff)
 {
-	return linked_list_data_read( &usart1_data, buff);
+	return Linked_List_Data_Read( &USART1_Data, buff);
 }
 
 

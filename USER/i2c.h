@@ -11,34 +11,34 @@
 
 struct I2Cx_Conf
 {
-	uint32_t i2cx_rcc;
-	I2C_TypeDef* i2cx;
-	uint32_t i2c_gpio_rcc;
-	uint16_t i2c_pin_scl;
-	uint16_t i2c_pin_sda;
-	GPIO_TypeDef* i2c_gpio;
+	uint32_t I2C_RCC;
+	I2C_TypeDef* I2Cx;
+	uint32_t I2C_GPIO_RCC;
+	uint16_t I2C_SCL_Pin;
+	uint16_t I2C_SDA_Pin;
+	GPIO_TypeDef* I2C_GPIO;
 	
 };
 
-void I2C1_Conf_Init(struct I2Cx_Conf *i2cx_conf);
-void I2Cx_Init(struct I2Cx_Conf *i2cx_conf);
+void I2C1_Conf_Init(struct I2Cx_Conf *I2Cx_Conf_Struct);
+void I2Cx_Init(struct I2Cx_Conf *I2Cx_Conf_Struct);
 
-uint8_t I2Cx_Wait(struct I2Cx_Conf *i2cx_conf);
-uint8_t I2Cx_Start(struct I2Cx_Conf *i2cx_conf);
-uint8_t I2Cx_Stop(struct I2Cx_Conf *i2cx_conf);
+uint8_t I2Cx_Wait(struct I2Cx_Conf *I2Cx_Conf_Struct);
+uint8_t I2Cx_Start(struct I2Cx_Conf *I2Cx_Conf_Struct);
+uint8_t I2Cx_Stop(struct I2Cx_Conf *I2Cx_Conf_Struct);
 
-uint8_t I2Cx_Address_Direction(struct I2Cx_Conf *i2cx_conf,uint8_t address, uint8_t direction);
-uint8_t I2Cx_Transmit(struct I2Cx_Conf *i2cx_conf,uint8_t byte);
+uint8_t I2Cx_Address_Direction(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t address, uint8_t direction);
+uint8_t I2Cx_Transmit(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t byte);
 
-void I2Cx_Ack_Enable(struct I2Cx_Conf *i2cx_conf);
-void I2Cx_Ack_Disable(struct I2Cx_Conf *i2cx_conf);
+void I2Cx_Ack_Enable(struct I2Cx_Conf *I2Cx_Conf_Struct);
+void I2Cx_Ack_Disable(struct I2Cx_Conf *I2Cx_Conf_Struct);
 
-uint8_t I2Cx_Receive_Ack(struct I2Cx_Conf *i2cx_conf, uint8_t* data);
-uint8_t I2Cx_Receive_Nack(struct I2Cx_Conf *i2cx_conf, uint8_t* data);
-uint8_t I2Cx_Receives(struct I2Cx_Conf *i2cx_conf,uint8_t* data,uint8_t len);
+uint8_t I2Cx_Receive_Ack(struct I2Cx_Conf *I2Cx_Conf_Struct, uint8_t* data);
+uint8_t I2Cx_Receive_Nack(struct I2Cx_Conf *I2Cx_Conf_Struct, uint8_t* data);
+uint8_t I2Cx_Receives(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t* data,uint8_t len);
 	
-uint8_t I2Cx_Write(struct I2Cx_Conf *i2cx_conf,uint8_t address, uint8_t data);
-uint8_t I2Cx_Read(struct I2Cx_Conf *i2cx_conf,uint8_t address, uint8_t* data);
+uint8_t I2Cx_Write(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t address, uint8_t data);
+uint8_t I2Cx_Read(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t address, uint8_t* data);
 
 
 #endif 
