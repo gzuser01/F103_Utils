@@ -100,7 +100,7 @@ uint8_t DS3231_Read(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t chip_address, uin
 {
 	_m_DS3231_I2C_Error_Code = 0x00;
 	
-	I2C1_Conf_Init(&DS3231_I2C1_Conf);
+	I2C1_Conf_Init(I2Cx_Conf_Struct);
 
 	I2Cx_Ack_Enable(I2Cx_Conf_Struct);
 	
@@ -160,7 +160,7 @@ uint8_t DS3231_Write(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t chip_address, ui
 	
 	_m_DS3231_I2C_Error_Code = 0x00;
 	
-	I2C1_Conf_Init(&DS3231_I2C1_Conf);
+	I2C1_Conf_Init(I2Cx_Conf_Struct);
 
 	I2Cx_Ack_Enable(I2Cx_Conf_Struct);
 	
