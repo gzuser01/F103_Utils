@@ -489,6 +489,11 @@
               <FileType>5</FileType>
               <FilePath>.\lcd1602_test.h</FilePath>
             </File>
+            <File>
+              <FileName>ds18b20_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ds18b20_test.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -15,7 +15,8 @@
 //#include "srf05_test.h"
 //#include "i2c_eeprom_test.h"
 //#include "ds3231_test.h"
-#include "lcd1602_test.h"
+//#include "lcd1602_test.h"
+#include "ds18b20_test.h"
 
 #include <stdlib.h>
 
@@ -44,7 +45,9 @@ int main(void)
 	
 	//ds3231_test();
 	
-	lcd1602_test();
+	//lcd1602_test();
+	
+	ds18b20_test();
 
   while (1)
   {	 
