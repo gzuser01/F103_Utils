@@ -5,7 +5,13 @@
 
 struct Linked_List_Node
 {
+	/**
+	 * 存储的数据，字符数组
+	 */
 	unsigned char *C;
+	/**
+	 * 指向下一个节点
+	 */
 	struct Linked_List_Node *Next;
 	
 };

@@ -11,7 +11,7 @@
 ..\output\usart1_util.o: ..\FWlib\inc\stm32f10x_rcc.h
 ..\output\usart1_util.o: ..\FWlib\inc\stm32f10x_usart.h
 ..\output\usart1_util.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-..\output\usart1_util.o: usart1_data.h
+..\output\usart1_util.o: usart_data.h
 ..\output\usart1_util.o: linked_list.h
 ..\output\usart1_util.o: linked_list_data.h
 ..\output\usart1_util.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

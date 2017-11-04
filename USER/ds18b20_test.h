@@ -218,6 +218,7 @@ float ds18b20_read(void)
 
 void ds18b20_test(void)
 {
+	//struct Linked_List_Data USART1_Data;
 	
 	float val;
 	char buffer[16];
@@ -235,7 +236,7 @@ void ds18b20_test(void)
 
 	USART1_Config(USART1_Tx_GPIOx,USART1_Tx_GPIO_Pin,USART1_Rx_GPIOx,USART1_Rx_GPIO_Pin); //USART1 ≈‰÷√ 
 
-	USART1_Data_Init();
+	//USART1_Data_Init(&USART1_Data);
 	
 	
 	

@@ -425,11 +425,6 @@
               <FilePath>.\flash_led.c</FilePath>
             </File>
             <File>
-              <FileName>usart1_data.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\usart1_data.c</FilePath>
-            </File>
-            <File>
               <FileName>linked_list.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\linked_list.c</FilePath>
@@ -493,6 +488,11 @@
               <FileName>ds18b20_test.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\ds18b20_test.h</FilePath>
+            </File>
+            <File>
+              <FileName>usart_data.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usart_data.c</FilePath>
             </File>
           </Files>
         </Group>

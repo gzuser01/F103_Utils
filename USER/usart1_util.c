@@ -64,8 +64,6 @@ void Flash_LED_USART1_Config(TIM_TypeDef* USART1_Callback_TIMx,
 	}
 		
 
-
-	USART1_Data_Init();
 }
 
 
