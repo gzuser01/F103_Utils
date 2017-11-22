@@ -400,11 +400,6 @@
               <FilePath>.\stm32f10x_it.c</FilePath>
             </File>
             <File>
-              <FileName>usart1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\usart1.c</FilePath>
-            </File>
-            <File>
               <FileName>timx.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\timx.c</FilePath>
@@ -413,11 +408,6 @@
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart1_util.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\usart1_util.c</FilePath>
             </File>
             <File>
               <FileName>flash_led.c</FileName>
@@ -493,6 +483,16 @@
               <FileName>usart_data.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\usart_data.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart_util.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usart_util.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\usart.c</FilePath>
             </File>
           </Files>
         </Group>

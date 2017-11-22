@@ -1,6 +1,6 @@
 ..\output\usart_data.o: usart_data.c
 ..\output\usart_data.o: usart_data.h
-..\output\usart_data.o: usart1.h
+..\output\usart_data.o: usart.h
 ..\output\usart_data.o: ..\CMSIS\stm32f10x.h
 ..\output\usart_data.o: ..\CMSIS\core_cm3.h
 ..\output\usart_data.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h

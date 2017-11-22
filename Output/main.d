@@ -14,8 +14,8 @@
 ..\output\main.o: timx.h
 ..\output\main.o: ..\FWlib\inc\stm32f10x_tim.h
 ..\output\main.o: ..\FWlib\inc\misc.h
-..\output\main.o: usart1_util.h
-..\output\main.o: usart1.h
+..\output\main.o: usart_util.h
+..\output\main.o: usart.h
 ..\output\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\output\main.o: usart_data.h
 ..\output\main.o: linked_list.h

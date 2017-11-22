@@ -10,7 +10,7 @@
  */
 
 
-#include "usart1_util.h"
+#include "usart_util.h"
 #include "timx.h"
 
 #define  SkipROM    0xCC     //Ã¯π˝ROM  
@@ -226,6 +226,9 @@ void ds18b20_test(void)
 
 	TIM_TypeDef* USART1_Callback_TIMx = TIM3;
 
+	USART_TypeDef* USARTx= USART1;
+	uint32_t USART_BaudRate = 115200;
+	
 	GPIO_TypeDef *USART1_Tx_GPIOx = GPIOA;
 	uint16_t USART1_Tx_GPIO_Pin = GPIO_Pin_9;
 
@@ -234,7 +237,8 @@ void ds18b20_test(void)
 
 	TIMx_With_NVIC_Config(USART1_Callback_TIMx,7199,99,NVIC_PriorityGroup_0,0,0); 
 
-	USART1_Config(USART1_Tx_GPIOx,USART1_Tx_GPIO_Pin,USART1_Rx_GPIOx,USART1_Rx_GPIO_Pin); //USART1 ≈‰÷√ 
+	USART_Config(USARTx,USART_BaudRate,
+		USART1_Tx_GPIOx,USART1_Tx_GPIO_Pin,USART1_Rx_GPIOx,USART1_Rx_GPIO_Pin); //USART1 ≈‰÷√ 
 
 	//USART1_Data_Init(&USART1_Data);
 	
@@ -252,10 +256,10 @@ void ds18b20_test(void)
 		sprintf(buffer, "%f", val);
 		
 		for(i=0;i<16;i++)
-			USART1_Send_Byte(buffer[i]);
+			USART_Send_Byte(USARTx,buffer[i]);
 
-		USART1_Send_Byte('\r');
-		USART1_Send_Byte('\n');
+		USART_Send_Byte(USARTx,'\r');
+		USART_Send_Byte(USARTx,'\n');
 
 
 		

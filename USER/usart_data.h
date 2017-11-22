@@ -10,7 +10,7 @@
  * 在主循环中通过 USART_Read_From_Buffer 整串读取
  */
 
-#include "usart1.h"
+#include "usart.h"
 #include "linked_list.h"
 #include "linked_list_data.h"
 

@@ -14,8 +14,8 @@
 ..\output\usart1_test.o: timx.h
 ..\output\usart1_test.o: ..\FWlib\inc\stm32f10x_tim.h
 ..\output\usart1_test.o: ..\FWlib\inc\misc.h
-..\output\usart1_test.o: usart1_util.h
-..\output\usart1_test.o: usart1.h
+..\output\usart1_test.o: usart_util.h
+..\output\usart1_test.o: usart.h
 ..\output\usart1_test.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\output\usart1_test.o: usart_data.h
 ..\output\usart1_test.o: linked_list.h
