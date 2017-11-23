@@ -3,7 +3,8 @@
 
 #include "i2c.h"
 #include "timx.h"
-#include "usart1_data.h"
+#include "usart.h"
+#include "usart_data.h"
 
 struct I2Cx_Conf LCD1602_I2C1_Conf;
 
@@ -11,6 +12,23 @@ uint8_t _m_LCD1602_Chip_Address = 0x7F;
 
 int8_t _m_LCD1602_I2C_Error_Code;
 
+/** 串口的回调配置 **/
+TIM_TypeDef* _m_LCD1602_USART_Callback_TIMx = TIM3;
+/** 串口1的配置 **/
+uint32_t _m_LCD1602_USART1_BaudRate = 115200;	
+GPIO_TypeDef *_m_LCD1602_USART1_Tx_GPIOx = GPIOA;
+uint16_t _m_LCD1602_USART1_Tx_GPIO_Pin = GPIO_Pin_9;
+GPIO_TypeDef *_m_LCD1602_USART1_Rx_GPIOx = GPIOA;
+uint16_t _m_LCD1602_USART1_Rx_GPIO_Pin = GPIO_Pin_10;
+/** 串口1的数据接收时缓存配置 **/
+#define LCD1602_USART1_Data_Node_Len 4 //链表中缓存节点的个数
+#define LCD1602_USART1_Data_Node_Char_Len 8 //一个节点里面字节长度
+unsigned char _m_LCD1602_USART1_Data_Eof[] = {0xEF,0xFF};
+unsigned short int _m_LCD1602_USART1_Eof_Len;
+struct Linked_List_Data _m_LCD1602_USART1_Data;
+struct Linked_List_Node _m_LCD1602_USART1_Data_Nodes[ LCD1602_USART1_Data_Node_Len ];
+unsigned char _m_LCD1602_USART1_Data_Node_Chars[ LCD1602_USART1_Data_Node_Len * LCD1602_USART1_Data_Node_Char_Len ];
+/** 串口1的数据接收时缓存配置 **/
 
 uint8_t LCD1602_Write(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t chip_address, uint8_t data)
 {
@@ -93,15 +111,15 @@ void LCD1602_SetCursor(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t col, uint8_t r
 
 void LCD1602_USART1_Recieve_Processor(void)
 {
-	int i = 0;
-	unsigned char buff[USART1_Data_Node_Char_Len];
+	unsigned int USART1_Read_Len = 0;
+	unsigned char USART1_Buff[LCD1602_USART1_Data_Node_Char_Len];
 	
 	while(1)
 	{
-		i = USART1_Read_To_Buffer(buff);
+		USART1_Read_Len = USART_Read_From_Buffer(&_m_LCD1602_USART1_Data,USART1_Buff);
 
 		//没有数据则退出
-		if(i == 0)
+		if(USART1_Read_Len == 0)
 		{
 			break;
 		}
@@ -122,17 +140,17 @@ void LCD1602_Flash(void)
 		LCD1602_Write(&LCD1602_I2C1_Conf,_m_LCD1602_Chip_Address,0x00);
 		if(_m_LCD1602_I2C_Error_Code != 0x00)
 		{
-			USART1_Send_Byte(0xEF);
-			USART1_Send_Byte(0x08);
-			USART1_Send_Byte(_m_LCD1602_I2C_Error_Code);
+			USART_Send_Byte(USART1,0xEF);
+			USART_Send_Byte(USART1,0x08);
+			USART_Send_Byte(USART1,_m_LCD1602_I2C_Error_Code);
 		}
 		Delay_Nms(500);
 		LCD1602_Write(&LCD1602_I2C1_Conf,_m_LCD1602_Chip_Address,0x08);
 		if(_m_LCD1602_I2C_Error_Code != 0x00)
 		{
-			USART1_Send_Byte(0xEF);
-			USART1_Send_Byte(0x08);
-			USART1_Send_Byte(_m_LCD1602_I2C_Error_Code);
+			USART_Send_Byte(USART1,0xEF);
+			USART_Send_Byte(USART1,0x08);
+			USART_Send_Byte(USART1,_m_LCD1602_I2C_Error_Code);
 		}
 	}
 }
@@ -152,32 +170,44 @@ void LCD1602_Write_Char(uint8_t c)
 	}
 }
 */
+
+void LCD1602_USART_Received_Data(USART_TypeDef* USARTx,unsigned char c)
+{
+	if(USARTx == USART1)
+	{
+		USART_Received_To_Buffer_Ignore_Error(&_m_LCD1602_USART1_Data,c);
+	}
+	
+}
+
+
 void lcd1602_test(void)
 {
 
-	TIM_TypeDef* USART1_Callback_TIMx = TIM3;
-	
-	GPIO_TypeDef *USART1_Tx_GPIOx = GPIOA;
-	uint16_t USART1_Tx_GPIO_Pin = GPIO_Pin_9;
 
-	GPIO_TypeDef *USART1_Rx_GPIOx = GPIOA;
-	uint16_t USART1_Rx_GPIO_Pin = GPIO_Pin_10;
 	
-	TIMx_With_NVIC_Config(USART1_Callback_TIMx,7199,99,NVIC_PriorityGroup_2,1,1); 
+	TIMx_With_NVIC_Config(_m_LCD1602_USART_Callback_TIMx,7199,99,NVIC_PriorityGroup_2,1,1); 
 	
-	USART1_Config(USART1_Tx_GPIOx,USART1_Tx_GPIO_Pin,USART1_Rx_GPIOx,USART1_Rx_GPIO_Pin); //USART1 配置 
+	USART_Config(USART1,_m_LCD1602_USART1_BaudRate,
+		_m_LCD1602_USART1_Tx_GPIOx,_m_LCD1602_USART1_Tx_GPIO_Pin,_m_LCD1602_USART1_Rx_GPIOx,_m_LCD1602_USART1_Rx_GPIO_Pin); //USART1 配置 	
 	
-	Register_USART1_Callback(USART1_Received_To_Buffer_Ignore_Error);
+	Register_USART_Callback(USART1,LCD1602_USART_Received_Data);
 	
-	Register_TIMx_Callback(USART1_Callback_TIMx,LCD1602_USART1_Recieve_Processor);
+	Register_TIMx_Callback(_m_LCD1602_USART_Callback_TIMx,LCD1602_USART1_Recieve_Processor);
 	
-	USART1_Data_Init();
+	USART_Data_Init(&_m_LCD1602_USART1_Data,
+		_m_LCD1602_USART1_Data_Nodes,
+		LCD1602_USART1_Data_Node_Len,
+		_m_LCD1602_USART1_Data_Node_Chars,
+		LCD1602_USART1_Data_Node_Char_Len,
+		_m_LCD1602_USART1_Data_Eof,
+		_m_LCD1602_USART1_Eof_Len);
 	
 
 	
 	I2C1_Conf_Init(&LCD1602_I2C1_Conf);
-	USART1_Send_Byte(0xFF);
-	USART1_Send_Byte(0xFF);
+	USART_Send_Byte(USART1,0xFF);
+	USART_Send_Byte(USART1,0xFF);
 	
 
 	LCD1602_Flash();

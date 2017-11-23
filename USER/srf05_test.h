@@ -10,8 +10,20 @@
 
 
 #include "gpio.h"
-#include "usart1.h"
+#include "usart.h"
 #include "timx.h"
+
+
+/** 串口的回调配置 **/
+TIM_TypeDef* _m_SRF05_USART_Callback_TIMx = TIM3;
+/** 串口1的配置 **/
+uint32_t _m_SRF05_USART1_BaudRate = 115200;	
+GPIO_TypeDef *_m_SRF05_USART1_Tx_GPIOx = GPIOA;
+uint16_t _m_SRF05_USART1_Tx_GPIO_Pin = GPIO_Pin_9;
+GPIO_TypeDef *_m_SRF05_USART1_Rx_GPIOx = GPIOA;
+uint16_t _m_SRF05_USART1_Rx_GPIO_Pin = GPIO_Pin_10;
+/** 串口1的配置 **/
+
 
 void init_char(char *c)
 {
@@ -41,14 +53,8 @@ void srf05_test(void)
 	uint16_t Echo_GPIO_Pin = GPIO_Pin_15;
 	
 	//
-	GPIO_TypeDef *USART1_Tx_GPIOx = GPIOA;
-	uint16_t USART1_Tx_GPIO_Pin = GPIO_Pin_9;
-
-	GPIO_TypeDef *USART1_Rx_GPIOx = GPIOA;
-	uint16_t USART1_Rx_GPIO_Pin = GPIO_Pin_10;
-	
-	//
-	USART1_Config(USART1_Tx_GPIOx,USART1_Tx_GPIO_Pin,USART1_Rx_GPIOx,USART1_Rx_GPIO_Pin); //USART1 配置 	
+	USART_Config(USART1,_m_SRF05_USART1_BaudRate,
+		_m_SRF05_USART1_Tx_GPIOx,_m_SRF05_USART1_Tx_GPIO_Pin,_m_SRF05_USART1_Rx_GPIOx,_m_SRF05_USART1_Rx_GPIO_Pin); //USART1 配置 		
 	//
 	GPIO_Config(Trig_GPIOx,Trig_GPIO_Pin,GPIO_Mode_Out_PP,GPIO_Speed_50MHz);
 	GPIO_Config(Echo_GPIOx,Echo_GPIO_Pin,GPIO_Mode_IN_FLOATING,GPIO_Speed_50MHz);
@@ -59,8 +65,8 @@ void srf05_test(void)
 	while (1)
 	{
 		count = 0;
-		USART1_Send_Byte('\r');
-		USART1_Send_Byte('\n');
+		USART_Send_Byte(USART1,'\r');
+		USART_Send_Byte(USART1,'\n');
 		
 
 		GPIO_SetBits(Trig_GPIOx,Trig_GPIO_Pin);
@@ -76,8 +82,8 @@ void srf05_test(void)
 		{
 			if(timeout == 0)
 			{
-				USART1_Send_Byte('-');
-				USART1_Send_Byte('1');
+				USART_Send_Byte(USART1,'-');
+				USART_Send_Byte(USART1,'1');
 				break;
 			}
 			timeout --;
@@ -95,8 +101,8 @@ void srf05_test(void)
 			{
 				if(timeout == 0)
 				{
-					USART1_Send_Byte('-');
-					USART1_Send_Byte('1');
+					USART_Send_Byte(USART1,'-');
+					USART_Send_Byte(USART1,'1');
 					break;
 				}
 				timeout --;
@@ -116,11 +122,11 @@ void srf05_test(void)
 
 				for(i = 0;i<8;i++)
 				{
-					USART1_Send_Byte(x[i]);
+					USART_Send_Byte(USART1,x[i]);
 				}
 			}
-			USART1_Send_Byte('\r');
-			USART1_Send_Byte('\n');
+			USART_Send_Byte(USART1,'\r');
+			USART_Send_Byte(USART1,'\n');
 			
 		}
 		//200 ms

@@ -460,11 +460,6 @@
               <FilePath>.\i2c.c</FilePath>
             </File>
             <File>
-              <FileName>i2c_eeprom_test.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\i2c_eeprom_test.h</FilePath>
-            </File>
-            <File>
               <FileName>ds3231_test.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\ds3231_test.h</FilePath>
@@ -485,14 +480,14 @@
               <FilePath>.\usart_data.c</FilePath>
             </File>
             <File>
-              <FileName>usart_util.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\usart_util.c</FilePath>
-            </File>
-            <File>
               <FileName>usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c_eeprom_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\i2c_eeprom_test.c</FilePath>
             </File>
           </Files>
         </Group>

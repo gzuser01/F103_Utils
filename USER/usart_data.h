@@ -6,8 +6,8 @@
  * 可以对串口接收到数据进行缓存，通过定义结束标记，可以整串读取，而不需要单个字符处理，
  * 适合接收特定格式的命令，也可避免处理不及时而阻塞
  *
- * 通过 Register_USART1_Callback 注册 USART_Received_To_Buffer，把串口接收到的数据放入缓存中
- * 在主循环中通过 USART_Read_From_Buffer 整串读取
+ * 通过 Register_USART1_Callback 注册的函数调用 USART_Received_To_Buffer，把串口接收到的数据放入缓存中
+ * 在主循环中或普通定时器的中断中通过 USART_Read_From_Buffer 整串读取
  */
 
 #include "usart.h"
@@ -47,47 +47,25 @@ void USART_Data_Init(struct Linked_List_Data *USART_Data,
 		unsigned short int USART_Data_Node_Char_Len,
 		unsigned char *USART_Data_Eof,unsigned short int USART_Eof_Len);
 
+/**
+ * 把串口接收到的字符加到buffer中，忽略是否成功
+ * 可在 Register_USART_Callback 注册的函数中调用
+ */ 
 void USART_Received_To_Buffer_Ignore_Error(struct Linked_List_Data *USART_Data,unsigned char c);
 
 
 /**
- * 把串口接收到的字符加到buffer中，
- * 可使用 Register_USART_Callback 注册
+ * 把串口接收到的字符加到buffer中，如果成功返回 1，失败返回 0
+ * 可在 Register_USART_Callback 注册的函数中调用
  */ 
 unsigned int USART_Received_To_Buffer(struct Linked_List_Data *USART_Data,unsigned char c);
 
 /**********************************
  * 从buffer读取串口写满或者写完的数据，读取后的数据从缓存中删除
-
-	int i = 0;
-	unsigned char buff[USART_data_node_char_len];
-
-	while(1)
-	{
-		i = USART_Read_From_Buffer(&USART_Data,buff);
-		if(i == 0)
-		{
-			return;
-		}
-		for(i = 0;i< USART_data_node_char_len;i++)
-		{
-			//USART_Send_Byte(&USART_Data,buff[i]); //
-		}
-		
-	}
-
- *
+ * 在主循环中或普通定时器的中断中通过 USART_Read_From_Buffer 整串读取
+ * 如果有数据返回 1，没有数据返回 0
  */
 unsigned int USART_Read_From_Buffer(struct Linked_List_Data *USART_Data,unsigned char * buff);
-
-
-
-
-
-
-
-
-
 
 
 

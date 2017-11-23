@@ -3,6 +3,9 @@
  * | PA9  - USART1(Tx)      |
  * | PA10 - USART1(Rx)      |
  * ------------------------
+ * | PA2  - USART2(Tx)      |
+ * | PA3 - USART2(Rx)      |
+ * ------------------------
  * 
 **********************************************************************************/
 
@@ -48,10 +51,11 @@ void USART_Config(USART_TypeDef* USARTx,uint32_t USART_BaudRate,
 	/* 使能 USART1 时钟*/
 	if(USARTx == USART1)
 	{
-		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE); 
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1 | RCC_APB2Periph_GPIOA, ENABLE); 
 	}
 	else if(USARTx == USART2)
 	{
+		RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA , ENABLE);
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE); 
 	}
 	
@@ -68,7 +72,7 @@ void USART_Config(USART_TypeDef* USARTx,uint32_t USART_BaudRate,
 	USART_InitStruct.USART_Parity = USART_Parity_No ;  //是否奇偶校验：无
 	USART_InitStruct.USART_HardwareFlowControl = USART_HardwareFlowControl_None;	//硬件流控制模式设置：没有使能
 	USART_InitStruct.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;//接收与发送都使能
-	USART_Init(USART1, &USART_InitStruct);  //初始化USART1
+	USART_Init(USARTx, &USART_InitStruct);  //初始化USARTx
 	
 	USART_ITConfig(USARTx, USART_IT_RXNE, ENABLE);//使能接受中断，在接受移位寄存器中有数据是产生
 	//USART_ITConfig(USARTx, USART_IT_TXE, ENABLE);//使能发送中断，在发送完数据后产生。

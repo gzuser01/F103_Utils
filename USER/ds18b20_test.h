@@ -9,8 +9,8 @@
  *
  */
 
-
-#include "usart_util.h"
+#include "usart.h"
+#include "usart_data.h"
 #include "timx.h"
 
 #define  SkipROM    0xCC     //Ìø¹ıROM  
