@@ -6,7 +6,7 @@
 #include "usart.h"
 #include "usart_data.h"
 
-struct I2Cx_Conf LCD1602_I2C1_Conf;
+struct I2Cx_Conf LCD1602_I2C_Conf;
 
 uint8_t _m_LCD1602_Chip_Address = 0x7F;
 
@@ -34,7 +34,7 @@ uint8_t LCD1602_Write(struct I2Cx_Conf *I2Cx_Conf_Struct,uint8_t chip_address, u
 {
 	_m_LCD1602_I2C_Error_Code = 0x00;
 	
-	I2C1_Conf_Init(I2Cx_Conf_Struct);
+	I2C2_Conf_Init(I2Cx_Conf_Struct);
 	
 	I2Cx_Ack_Enable(I2Cx_Conf_Struct);
 	
@@ -137,7 +137,7 @@ void LCD1602_Flash(void)
 	for(i = 0;i<3;i++)
 	{
 		Delay_Nms(500);
-		LCD1602_Write(&LCD1602_I2C1_Conf,_m_LCD1602_Chip_Address,0x00);
+		LCD1602_Write(&LCD1602_I2C_Conf,_m_LCD1602_Chip_Address,0x00);
 		if(_m_LCD1602_I2C_Error_Code != 0x00)
 		{
 			USART_Send_Byte(USART1,0xEF);
@@ -145,7 +145,7 @@ void LCD1602_Flash(void)
 			USART_Send_Byte(USART1,_m_LCD1602_I2C_Error_Code);
 		}
 		Delay_Nms(500);
-		LCD1602_Write(&LCD1602_I2C1_Conf,_m_LCD1602_Chip_Address,0x08);
+		LCD1602_Write(&LCD1602_I2C_Conf,_m_LCD1602_Chip_Address,0x08);
 		if(_m_LCD1602_I2C_Error_Code != 0x00)
 		{
 			USART_Send_Byte(USART1,0xEF);
@@ -158,8 +158,8 @@ void LCD1602_Flash(void)
 /*
 void LCD1602_Write_Char(uint8_t c)
 {
-	LCD1602_Write(&LCD1602_I2C1_Conf,_m_LCD1602_Chip_Address,0x01 | 0x08,(c&0xf0) | 0x08);
-	LCD1602_Write(&LCD1602_I2C1_Conf,_m_LCD1602_Chip_Address,0x01 | 0x08,((c<<4)&0xf0) | 0x08);
+	LCD1602_Write(&LCD1602_I2C_Conf,_m_LCD1602_Chip_Address,0x01 | 0x08,(c&0xf0) | 0x08);
+	LCD1602_Write(&LCD1602_I2C_Conf,_m_LCD1602_Chip_Address,0x01 | 0x08,((c<<4)&0xf0) | 0x08);
 	
 	
 	if(_m_LCD1602_I2C_Error_Code != 0x00)
@@ -205,7 +205,7 @@ void lcd1602_test(void)
 	
 
 	
-	I2C1_Conf_Init(&LCD1602_I2C1_Conf);
+	I2C2_Conf_Init(&LCD1602_I2C_Conf);
 	USART_Send_Byte(USART1,0xFF);
 	USART_Send_Byte(USART1,0xFF);
 	
@@ -213,60 +213,60 @@ void lcd1602_test(void)
 	LCD1602_Flash();
 	
 	
-	LCD1602_Command(&LCD1602_I2C1_Conf,0x01);
-	LCD1602_Command(&LCD1602_I2C1_Conf,0x02);
+	LCD1602_Command(&LCD1602_I2C_Conf,0x01);
+	LCD1602_Command(&LCD1602_I2C_Conf,0x02);
 	
 
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'a');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'b');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'0');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'1');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'2');
-	
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'a');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'b');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'0');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'1');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'2');
+	/*
 	Delay_Nms(1000);
-	LCD1602_Command(&LCD1602_I2C1_Conf,0x01);
-	LCD1602_Command(&LCD1602_I2C1_Conf,0x02);
+	LCD1602_Command(&LCD1602_I2C_Conf,0x01);
+	LCD1602_Command(&LCD1602_I2C_Conf,0x02);
 	
-	LCD1602_SetCursor(&LCD1602_I2C1_Conf,0,0);
+	LCD1602_SetCursor(&LCD1602_I2C_Conf,0,0);
 	
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'x');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'y');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'z');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,':');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'+');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'=');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'0');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'1');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'2');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'3');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'4');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'5');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'6');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'7');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'8');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'9');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'x');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'y');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'z');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,':');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'+');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'=');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'0');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'1');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'2');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'3');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'4');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'5');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'6');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'7');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'8');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'9');
 	
-	LCD1602_SetCursor(&LCD1602_I2C1_Conf,0,1);
+	LCD1602_SetCursor(&LCD1602_I2C_Conf,0,1);
 
 
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'a');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'b');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'c');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'d');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'e');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'f');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'0');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'1');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'2');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'3');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'4');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'5');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'6');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'7');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'8');
-	LCD1602_Send_Char(&LCD1602_I2C1_Conf,'9');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'a');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'b');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'c');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'d');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'e');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'f');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'0');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'1');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'2');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'3');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'4');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'5');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'6');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'7');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'8');
+	LCD1602_Send_Char(&LCD1602_I2C_Conf,'9');
 
-
+	*/
 }
 
 

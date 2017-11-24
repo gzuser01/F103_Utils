@@ -17,6 +17,19 @@ void I2C1_Conf_Init(struct I2Cx_Conf *I2Cx_Conf_Struct)
 	I2Cx_Init(I2Cx_Conf_Struct);
 }
 
+void I2C2_Conf_Init(struct I2Cx_Conf *I2Cx_Conf_Struct)
+{
+	
+	I2Cx_Conf_Struct->I2C_RCC = RCC_APB1Periph_I2C2;
+	I2Cx_Conf_Struct->I2Cx = I2C2;
+	I2Cx_Conf_Struct->I2C_GPIO_RCC = RCC_APB2Periph_GPIOB;
+	I2Cx_Conf_Struct->I2C_SCL_Pin = GPIO_Pin_10;
+	I2Cx_Conf_Struct->I2C_SDA_Pin = GPIO_Pin_11;
+	I2Cx_Conf_Struct->I2C_GPIO = GPIOB;
+	
+	I2Cx_Init(I2Cx_Conf_Struct);
+}
+
 
 void I2Cx_Init(struct I2Cx_Conf *I2Cx_Conf_Struct)
 {

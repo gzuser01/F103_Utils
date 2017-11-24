@@ -21,6 +21,8 @@ struct I2Cx_Conf
 };
 
 void I2C1_Conf_Init(struct I2Cx_Conf *I2Cx_Conf_Struct);
+void I2C2_Conf_Init(struct I2Cx_Conf *I2Cx_Conf_Struct);
+
 void I2Cx_Init(struct I2Cx_Conf *I2Cx_Conf_Struct);
 
 uint8_t I2Cx_Wait(struct I2Cx_Conf *I2Cx_Conf_Struct);

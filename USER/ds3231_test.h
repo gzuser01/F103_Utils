@@ -337,7 +337,7 @@ void ds3231_test(void)
 	
 	TIMx_With_NVIC_Config(_m_DS3231_USART_Callback_TIMx,7199,99,NVIC_PriorityGroup_0,0,0); 
 	
-		USART_Config(USART1,_m_DS3231_USART1_BaudRate,
+	USART_Config(USART1,_m_DS3231_USART1_BaudRate,
 		_m_DS3231_USART1_Tx_GPIOx,_m_DS3231_USART1_Tx_GPIO_Pin,_m_DS3231_USART1_Rx_GPIOx,_m_DS3231_USART1_Rx_GPIO_Pin); //USART1 配置 	
 	
 	I2C1_Conf_Init(&DS3231_I2C1_Conf);
@@ -356,19 +356,18 @@ void ds3231_test(void)
 		_m_DS3231_USART1_Data_Eof,
 		_m_DS3231_USART1_Eof_Len);
 	
+	//如果初始成功串口打印 01 02，否则只有 01
+	USART_Send_Byte(USART1,0x01);
+	
 	DS3231_Init(_m_DS3231_Chip_Address);
+	
+	USART_Send_Byte(USART1,0x02);
+	USART_Send_Byte(USART1,0xFF);
+	USART_Send_Byte(USART1,0xFF);
 	if(DS3231_I2C_Error_Code() != 0x00)
 	{
-		USART_Send_Byte(USART1,0xFF);
-		USART_Send_Byte(USART1,0xFF);
 		USART_Send_Byte(USART1,DS3231_I2C_Error_Code());
 	}
-	else
-	{
-		USART_Send_Byte(USART1,0xFF);
-		USART_Send_Byte(USART1,0xFF);
-	}
-	
 	
 	
 	

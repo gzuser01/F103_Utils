@@ -489,6 +489,11 @@
               <FileType>1</FileType>
               <FilePath>.\i2c_eeprom_test.c</FilePath>
             </File>
+            <File>
+              <FileName>ds3231_with_lcd1602_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ds3231_with_lcd1602_test.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

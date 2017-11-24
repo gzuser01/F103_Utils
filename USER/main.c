@@ -10,13 +10,15 @@
 
 #include "gpio.h"
 
-#include "usart1_test.h"
+//#include "usart1_test.h"
 //#include "pwm_led_test.h"
 //#include "srf05_test.h"
 //#include "i2c_eeprom_test.h"
 //#include "ds3231_test.h"
 //#include "lcd1602_test.h"
 //#include "ds18b20_test.h"
+#include "ds3231_with_lcd1602_test.h"
+
 
 #include <stdlib.h>
 
@@ -33,7 +35,7 @@ int main(void)
   //TIMx_With_NVIC_Config(TIM3,7199,99,NVIC_PriorityGroup_2,1,0);  
 	//TIMx_With_NVIC_Config(TIM4,7199,99,NVIC_PriorityGroup_2,2,0); 
 	
-	usart1_test();
+	//usart1_test();
 	
 	//pwm_led_test();
 	
@@ -46,6 +48,8 @@ int main(void)
 	//ds3231_test();
 	
 	//lcd1602_test();
+	
+	ds3231_with_lcd1602_test();
 	
 	//ds18b20_test();
 
