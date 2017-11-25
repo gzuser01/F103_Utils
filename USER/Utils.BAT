@@ -25,6 +25,7 @@ SET CPU_CLOCK=0x007A1200
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\output\stm32f10x_tim.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\output\misc.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\output\stm32f10x_i2c.__i"
+"C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\output\stm32f10x_exti.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\output\core_cm3.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmCC" --Via "..\output\system_stm32f10x.__i"
 "C:\Keil_v5\ARM\ARMCC\Bin\ArmLink" --Via "..\Output\F103-Utils.lnp"

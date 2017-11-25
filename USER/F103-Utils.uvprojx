@@ -494,6 +494,16 @@
               <FileType>5</FileType>
               <FilePath>.\ds3231_with_lcd1602_test.h</FilePath>
             </File>
+            <File>
+              <FileName>ds3231.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ds3231.h</FilePath>
+            </File>
+            <File>
+              <FileName>ds3231_test2.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ds3231_test2.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -528,6 +538,11 @@
               <FileName>stm32f10x_i2c.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\FWlib\src\stm32f10x_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f10x_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\FWlib\src\stm32f10x_exti.c</FilePath>
             </File>
           </Files>
         </Group>
